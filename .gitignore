@@ -3,6 +3,10 @@
 __pycache__/
 *.pyc
 *.bak_zeros
+*.egg-info/
+.pytest_cache/
+build/
+dist/
 
 # Python virtual env
 .venv/
