@@ -26,6 +26,19 @@ PROP_MAP = {
     "shear_modulus": "shear_modulus_GPa",
 }
 
+# battgpt:belongsToElectrode links a material to one of exactly 4 fixed
+# NamedIndividuals (never the 6 concrete leaf role classes) -- see
+# ONT_ABOX_EXTENSION.md's "belongsToElectrode" finding. Names must match the
+# real rdfs:label DeepOnto assigns these classes in battgpt_tbox_ont/
+# concept_names.json (extract_tbox.py), so ABox exist rows and TBox concept
+# names refer to the same string.
+ROLE_INDIVIDUAL_TO_CLASS_LABEL = {
+    "https://w3id.org/battgpt/kg#PositiveElectrodeRoleIndividual": "Positive Electrode Role",
+    "https://w3id.org/battgpt/kg#NegativeElectrodeRoleIndividual": "Negative Electrode Role",
+    "https://w3id.org/battgpt/kg#ElectrolyteRoleIndividual": "Electrolyte Role",
+    "https://w3id.org/battgpt/kg#SeparatorRoleIndividual": "Separator Role",
+}
+
 
 def _load_ttl_helpers():
     path = PROJ_ROOT / "HGT-Pipeline" / "battery_hgt" / "rdf_to_hetero.py"
@@ -97,6 +110,10 @@ def extract(ttl_path: Path, max_materials: int = 20) -> dict:
             for pred, obj in obj_e:
                 if pred in {"hasStructure", "hasstructure"} or pred.endswith("hasStructure"):
                     rec["structure_uri"] = obj
+                elif pred in {"belongsToElectrode", "belongstoelectrode"} or pred.endswith("belongsToElectrode"):
+                    role_label = ROLE_INDIVIDUAL_TO_CLASS_LABEL.get(obj)
+                    if role_label:
+                        rec["battery_role"] = role_label
         elif "/crystal/" in subj and mid and mid in selected_set:
             crec = crystals.setdefault(mid, {"mp_id": mid, "uri": subj})
             if "label" in lits and isinstance(lits["label"], str):
@@ -130,6 +147,7 @@ def extract(ttl_path: Path, max_materials: int = 20) -> dict:
             "is_stable_flag": float(mat.get("is_stable_flag", 0.0)),
             "structure": structure,
             "structure_uri": mat.get("structure_uri", f"https://w3id.org/battgpt/kg/crystal/{mid}"),
+            "battery_role": mat.get("battery_role"),
             "sites": f"{n} ({', '.join(elems)})" if elems else str(n),
             "n_sites": n,
             "elements": elems,

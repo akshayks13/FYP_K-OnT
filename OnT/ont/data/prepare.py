@@ -215,6 +215,18 @@ class ELNormalizedData:
         # Also collect per-nf index lists so we can sample eval proportionally
         nf_indices: Dict[str, List[int]] = {f"nf{i}": [] for i in range(1, 5)}
 
+        def _safe_sample(exclude: set, k: int = 10) -> List[str]:
+            # Exclude the true child/parent/filler so the negative set never
+            # contains an accidental positive. On a small concept pool (a
+            # few dozen classes, as opposed to the hundreds/thousands in
+            # GALEN/FoodOn-scale ontologies) a plain random sample(k=10) has
+            # a high chance of drawing the very thing being contrasted
+            # against, which silently corrupts both this clustering signal
+            # and training itself (the loss pushes the child away from its
+            # own true parent as a "negative").
+            pool = [c for c in concept_list if c not in exclude]
+            return sample(pool, k=min(k, len(pool)))
+
         for nf_kind in ["nf1", "nf2", "nf3", "nf4"]:
             data = all_nfs[nf_kind]
             if data.size == 0:
@@ -225,7 +237,7 @@ class ELNormalizedData:
                 if nf_kind == "nf1":
                     child_name = concept_names[str(item[0])]
                     parent_name = concept_names[str(item[1])]
-                    neg_samples = sample(concept_list, k=min(10, len(concept_list)))
+                    neg_samples = _safe_sample({child_name, parent_name})
                     all_train_data.append({"child": child_name, "parent": parent_name,
                                            "negative": neg_samples, "_nf": nf_kind, "_ids": item.tolist()})
                 elif nf_kind == "nf2":
@@ -233,7 +245,7 @@ class ELNormalizedData:
                     con2 = concept_names[str(item[1])]
                     parent_name = concept_names[str(item[2])]
                     child_name = f"{con1} and {con2}"
-                    neg_samples = sample(concept_list, k=min(10, len(concept_list)))
+                    neg_samples = _safe_sample({con1, con2, parent_name})
                     all_train_data.append({"child": child_name, "parent": parent_name,
                                            "negative": neg_samples, "_nf": nf_kind, "_ids": item.tolist()})
                     conj_data.append({"Concept": child_name, "con1": con1, "con2": con2})
@@ -242,7 +254,7 @@ class ELNormalizedData:
                     role_name = role_names[str(item[1])]
                     filler_name = concept_names[str(item[2])]
                     parent_name = f"{role_name} some {filler_name}"
-                    neg_samples = [f"{role_name} some {n}" for n in sample(concept_list, k=min(10, len(concept_list)))]
+                    neg_samples = [f"{role_name} some {n}" for n in _safe_sample({child_name, filler_name})]
                     all_train_data.append({"child": child_name, "parent": parent_name,
                                            "negative": neg_samples, "_nf": nf_kind, "_ids": item.tolist()})
                     exist_data.append({"Concept": parent_name, "role": role_name, "con": filler_name})
@@ -251,7 +263,7 @@ class ELNormalizedData:
                     filler_name = concept_names[str(item[1])]
                     parent_name = concept_names[str(item[2])]
                     child_name = f"{role_name} some {filler_name}"
-                    neg_samples = sample(concept_list, k=min(10, len(concept_list)))
+                    neg_samples = _safe_sample({filler_name, parent_name})
                     all_train_data.append({"child": child_name, "parent": parent_name,
                                            "negative": neg_samples, "_nf": nf_kind, "_ids": item.tolist()})
                     exist_data.append({"Concept": child_name, "role": role_name, "con": filler_name})

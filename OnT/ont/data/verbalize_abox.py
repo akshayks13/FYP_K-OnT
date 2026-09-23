@@ -50,6 +50,8 @@ def verbalize_material(row: dict) -> str:
         if line:
             lines.append(line)
     lines.append(f"Structure: {row['structure']}")
+    if row.get("battery_role"):
+        lines.append(f"Battery role: {row['battery_role']}")
     if row.get("sites"):
         lines.append(f"Sites: {row['sites']}")
     return "\n".join(lines)

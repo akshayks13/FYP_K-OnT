@@ -33,7 +33,7 @@ if str(ONT_ROOT) not in sys.path:
 
 from ont.data.extract_abox import extract
 from ont.data.load import load_local_dataset
-from ont.data.merge_abox import ROLE, TRUE_TYPE, load_tbox, merge, write_ont_data
+from ont.data.merge_abox import ELECTRODE_ROLE_CLASSES, ROLE, ROLE_ELECTRODE, TRUE_TYPE, load_tbox, merge, write_ont_data
 from ont.data.verbalize_abox import run as verbalize_run
 from ont.hit import HierarchyTransformer
 from ont.losses.hit_loss import HierarchyTransformerLoss
@@ -125,6 +125,31 @@ def crowding(model, verbalizations: dict[str, str], ids: list[str]) -> dict:
         "p50_pairwise_dist": float(np.percentile(arr, 50)),
         "max_pairwise_dist": float(arr.max()),
     }
+
+
+def electrode_role_report(
+    model, verbalizations: dict[str, str], battery_role: dict[str, str], ids: list[str]
+) -> dict:
+    """Accuracy of the belongsToElectrode exist relation: is a material's
+    true role (Positive/Negative/Electrolyte/Separator) the nearest of the
+    4 possible fillers, by "belongs to electrode some <role>" phrasing?"""
+    labeled = [m for m in ids if battery_role.get(m) in ELECTRODE_ROLE_CLASSES]
+    if not labeled:
+        return {"n": 0, "accuracy": None}
+    fillers = [f"{ROLE_ELECTRODE} some {r}" for r in ELECTRODE_ROLE_CLASSES]
+    filler_x, man = to_ball(model, fillers)
+    rows = []
+    n_ok = 0
+    for mid in labeled:
+        v, _ = to_ball(model, [verbalizations[mid]])
+        dists = {r: float(man.dist(v, filler_x[i : i + 1]).item()) for i, r in enumerate(ELECTRODE_ROLE_CLASSES)}
+        nearest = min(dists, key=dists.get)
+        true_role = battery_role[mid]
+        ok = nearest == true_role
+        n_ok += int(ok)
+        rows.append({"mp_id": mid, "true_role": true_role, "nearest_role": nearest, "correct": ok})
+    n = len(labeled)
+    return {"n": n, "accuracy": n_ok / n, "random_baseline": 1.0 / len(ELECTRODE_ROLE_CLASSES), "rows": rows}
 
 
 def _random_mrr(pool_size: int) -> float:
@@ -279,13 +304,17 @@ def main() -> int:
     concept_list = list(concept_names.values())
 
     chemsys = {row["mp_id"]: row["chemsys"] for row in bundle["materials"]}
+    battery_role = {row["mp_id"]: row.get("battery_role") for row in bundle["materials"]}
     ids = [row["mp_id"] for row in bundle["materials"]]
     rng = random.Random(args.seed)
     held = set(rng.sample(ids, k=min(args.n_heldout, max(0, len(ids) - 1))))
     train_ids = [i for i in ids if i not in held]
 
     t0 = time.time()
-    train_rows, exist, counts = merge(verbal, crystals, train_ids, chemsys, tbox_rows, concept_names, seed=args.seed)
+    train_rows, exist, counts = merge(
+        verbal, crystals, train_ids, chemsys, tbox_rows, concept_names,
+        battery_role=battery_role, seed=args.seed,
+    )
     counts["heldout_ids_sample"] = sorted(held)[:20]
     counts["n_heldout"] = len(held)
     write_ont_data(abox_dir / "ont_data", train_rows, exist, counts, concept_names, role_names)
@@ -313,6 +342,9 @@ def main() -> int:
     ranking_held = hasstructure_ranking(model, verbal, crystals, held_sorted, ids, seed=args.seed, pool_size=args.ranking_pool_size)
     ranking_train = hasstructure_ranking(model, verbal, crystals, train_ids, ids, seed=args.seed, pool_size=args.ranking_pool_size)
 
+    role_held = electrode_role_report(model, verbal, battery_role, held_sorted)
+    role_train = electrode_role_report(model, verbal, battery_role, train_ids)
+
     passed = after_hold["type_accuracy"] >= 0.5 and after_hold["closer_than_crystal"] >= 0.5
     report = {
         "n_materials": len(ids),
@@ -330,6 +362,8 @@ def main() -> int:
         "crowding_after": after_crowd,
         "hasstructure_ranking_heldout": ranking_held,
         "hasstructure_ranking_trainset": ranking_train,
+        "electrode_role_heldout": role_held,
+        "electrode_role_trainset": role_train,
         "pass": passed,
     }
     out = abox_dir / "phase5b_report.json"
@@ -347,6 +381,10 @@ def main() -> int:
     print(f"  crowding min dist:      before {before_crowd['min_pairwise_dist']:.3f} -> after {after_crowd['min_pairwise_dist']:.3f}")
     print(f"  hasStructure MRR (held): {ranking_held['mrr']:.3f}  (random baseline {ranking_held['random_mrr_baseline']:.3f})")
     print(f"  hasStructure Hits@1 (held): {ranking_held['hits@1']:.0%}  (random baseline {ranking_held['random_hits@1_baseline']:.1%})")
+    if role_held["n"]:
+        print(f"  electrode role acc (held): {role_held['accuracy']:.0%}  (n={role_held['n']}, random baseline {role_held['random_baseline']:.0%})")
+    else:
+        print("  electrode role acc (held): no held-out materials have a battery role")
     print(f"  wrote {out}")
     return 0 if passed else 1
 

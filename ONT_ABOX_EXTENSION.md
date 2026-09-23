@@ -82,7 +82,7 @@ entities.json + sentences + JSONL
 OnT trainer             ← never opens the TTL
 ```
 
-TBox classes sit in the **first part** of the same TTL. Copy those declarations into a tiny schema OWL. Do not `owl:imports` full EMMO.
+**Correction (implemented, 23 Sep 2026):** TBox classes do **not** sit only in the first part of the file. `owl:Class` / `owl:ObjectProperty` / `owl:DatatypeProperty` declarations are scattered across all 9.6M lines (e.g. `battgpt:ElectrolyteRole`, `battgpt:PositiveElectrodeRole`, `battgpt:BatteryRole` first appear at lines ~31,037 and ~6,293,196 and ~6,329,914, not in the head). `extract_tbox.py` does one full streaming pass (same block reader as `extract_abox.py`) collecting every such declaration by type, not just the first ~360 lines. It also drops the one dangling `rdfs:subClassOf` edge that points at an unimported external EMMO class, and stub-declares the EMMO classes ABox individuals are typed under (`chsub:Substance`, `cryst:Crystal`, …) since those are never declared locally. Copy those declarations into a tiny schema OWL — confirmed correct, just not confined to the head. Do not `owl:imports` full EMMO.
 
 ---
 
@@ -267,6 +267,7 @@ Default implementation **reuses** OnT losses so we do not change `model.py`. Tha
 | ABox type | `a : Substance` | \(V(a)\) ⊑ `"substance"` | **reuse** hierarchy | **test vs** a simple class margin / softmax on \(V(a)\) → class |
 | ABox relation | `hasStructure(m, c)` | \(V(a)\) ⊑ ∃hasStructure.\(V(c)\) | **reuse** exist | load-bearing; still **measure** (Phase 5b). This is **narrower** than OnT’s paper: one role, two point clouds (materials ↔ crystals). `f_r` is closer to an alignment than a logical operator over many concept pairs. Do not treat Hits@k as a proof of Proposition 1. |
 | Literals | formula, band gap, … | fields in \(V(a)\) | none in OnT | concat floats at export (§8) |
+| ABox relation 2 | `belongsToElectrode(m, role)` | \(V(a)\) ⊑ ∃belongsToElectrode.(role class) | **reuse** exist | **added 23 Sep 2026.** Not in the original plan text below — found while implementing: covers **3,626 / 5,000 materials (73%)**, pointing at one of exactly 4 fixed role individuals (`Positive/Negative ElectrodeRoleIndividual`, `ElectrolyteRoleIndividual`, `SeparatorRoleIndividual`), each typed under the real `BatteryRole` subtree built in §3/Phase 3. This is what actually ties most ABox materials into the *deep* hierarchy (BatteryRole → …), not just the flat `material ⊑ substance` line. Only 4 possible fillers, so negatives are just "the other 3 roles" — no hard-negative mining needed, unlike `hasStructure`. |
 
 ```text
 L = L_hierarchy(TBox + type rows) + λ_exist · L_exist(hasStructure, …)
@@ -522,7 +523,7 @@ Elements/crystals: `x` may be empty or a smaller set; pad consistently or skip c
 
 **Not in \(V(a)\):** raw CIF loop.
 
-**Main exist relation:** `hasStructure`. Other object properties: pack into \(V(a)\) unless we later add more exist rows.
+**Main exist relation:** `hasStructure`. **Second exist relation (added):** `belongsToElectrode`, 73% coverage — see §6.1 table. Other object properties: pack into \(V(a)\) unless we later add more exist rows.
 
 Target: **thousands of training rows**, not one row per triple.
 
@@ -715,6 +716,34 @@ DO NOT CHANGE
 Order: extractor (20 materials) → read verbalizations → 10 JSONL rows + one train step → tiny TBox OWL → merge + full extract → train 1 epoch → encode + concat → export with formula keys.
 
 ---
+
+## 12.5 Implementation status (added 23 Sep 2026)
+
+Everything below is **built and unit-verified at small scale (25 materials)**. Full-scale (~5,000 materials) training has **not** been run — the dev machine (Mac, MPS backend) thrashes system swap once past ~200 materials in a single process (verified: a 200-material/1-epoch run made 20/127 steps in 17 minutes before being killed, swap at 94%). Full-scale training is deferred to different hardware (a CUDA machine); `train_abox.py`'s `pick_device()` already auto-detects CUDA, no code change needed there.
+
+**Done and matching this plan:**
+
+- Phase 1 (`extract_abox.py`): streams the whole file once, verified correct at full 5,000-material scale (71s, no OWL/rdflib load of the full graph). Now also captures `belongsToElectrode` → role label.
+- Phase 2 (`verbalize_abox.py`): structured template per §7, now includes a `Battery role: …` line when present.
+- Phase 3 (`extract_tbox.py` + `ont/data/prepare.py`): real TBox — 12 locally-declared classes + 9 stub classes for EMMO types, 21 real object properties, 31 real datatype properties, 10 real `subClassOf` axioms (the battery-role hierarchy: `BatteryRole → {Electrolyte,Positive,Negative,Separator}Role → 6 concrete role classes`). No fabricated class list.
+- Phase 4 (`merge_abox.py`): merges real TBox rows + ABox type rows + two ABox exist channels (`hasStructure`, `belongsToElectrode`).
+- Phase 5 / 5b (`train_abox.py`): parametrized driver (material count, epochs, batch size all CLI args) plus four checks: type accuracy, `hasStructure` ranking (MRR/Hits@k vs. random baseline), `belongsToElectrode` role accuracy (vs. 25% random baseline), and crowding (pairwise Poincaré distance, before vs. after).
+
+**Bug found and fixed:** `ont/data/prepare.py`'s negative sampling (`sample(concept_list, k=10)`, present in the original unmodified OnT code) never excluded the true child/parent from the sampled negatives. Harmless on the large ontologies OnT was validated on (hundreds/thousands of classes); on this project's small TBox (21 concepts, 10 negatives ≈ 48% of the pool) it meant the true parent landed in its own negative list on 9/10 axioms, corrupting training itself, not just eval. Fixed by excluding child/parent/filler from the negative pool per axiom type (`_safe_sample`); regenerated `battgpt_tbox_ont/` afterward (verified 0/10 contaminated).
+
+**Real result at 25-material scale (1–8 epochs), after the fix:**
+
+| Check | Result |
+|---|---|
+| ABox type accuracy (held-out) | 0% (pretrained) → 100% (trained), vs. real 21-class pool |
+| `hasStructure` ranking (held-out) | MRR 1.0, Hits@1 100%, vs. random baseline MRR 0.15 |
+| Crowding (mean pairwise dist, train set) | 4.25 → 7.08 (1 epoch) → 11.8 (8 epochs) — spreads, does not collapse |
+| TBox centripetal (child farther from origin than parent) | 10/10 |
+| TBox clustering (child nearer true parent than sibling) | 3/10 (1 epoch), 4/10 (8 epochs) — **weak**, matches Pitfall #4 below; more epochs alone doesn't fix it, and this is independent of ABox material count since the TBox axiom set is fixed at 10 unique axioms regardless of scale |
+
+Honest read: the ABox-critical paths (material typing, `hasStructure` relation — the ones that matter for feeding CrystaLLM) are learning correctly. The TBox's own internal battery-role hierarchy clusters only partially at this epoch count — a real, now-measured instance of Pitfall #4 (loss-reuse hypothesis), not a blocking bug.
+
+**Not yet done:** Phase 6 export (`export_instance_embeddings.py` / numeric concat per §8) does not exist yet. Phase 7 (CrystaLLM wiring) explicitly deferred by request.
 
 ## 13. Pitfalls
 

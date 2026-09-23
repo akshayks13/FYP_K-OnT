@@ -18,6 +18,16 @@ TBOX_ONT_DIR = ONT_ROOT / "data" / "battgpt_tbox_ont"
 
 TRUE_TYPE = "substance"
 ROLE = "has structure"
+ROLE_ELECTRODE = "belongs to electrode"
+# The only 4 fillers battgpt:belongsToElectrode ever points at (see
+# extract_abox.py's ROLE_INDIVIDUAL_TO_CLASS_LABEL) -- a fixed, small set,
+# unlike hasStructure's per-material crystal pool.
+ELECTRODE_ROLE_CLASSES = [
+    "Positive Electrode Role",
+    "Negative Electrode Role",
+    "Electrolyte Role",
+    "Separator Role",
+]
 
 
 def load_tbox(tbox_ont_dir: Path) -> tuple[list[dict], dict[str, str], dict[str, str]]:
@@ -31,6 +41,11 @@ def load_tbox(tbox_ont_dir: Path) -> tuple[list[dict], dict[str, str], dict[str,
         raise ValueError(f"{TRUE_TYPE!r} missing from {tbox_ont_dir}/concept_names.json")
     if ROLE not in role_names.values():
         raise ValueError(f"{ROLE!r} missing from {tbox_ont_dir}/role_names.json")
+    if ROLE_ELECTRODE not in role_names.values():
+        raise ValueError(f"{ROLE_ELECTRODE!r} missing from {tbox_ont_dir}/role_names.json")
+    missing_role_classes = [c for c in ELECTRODE_ROLE_CLASSES if c not in concept_names.values()]
+    if missing_role_classes:
+        raise ValueError(f"{missing_role_classes} missing from {tbox_ont_dir}/concept_names.json")
     return tbox_rows, concept_names, role_names
 
 
@@ -45,6 +60,7 @@ def merge(
     chemsys: dict[str, str],
     tbox_rows: list[dict],
     concept_names: dict[str, str],
+    battery_role: dict[str, str] | None = None,
     seed: int = 8888,
     n_type_negatives: int = 10,
 ) -> tuple[list[dict], list[dict], dict]:
@@ -84,6 +100,26 @@ def merge(
             negs = [c for c in crystal_pool if c != v_c][:2] or ["crystal"]
         exist_rows.extend(_rows_per_negative(v_m, exist_parent, [f"{ROLE} some {n}" for n in negs]))
         train_exist.append({"Concept": exist_parent, "role": ROLE, "con": v_c})
+    n_structure_rows = len(exist_rows)
+
+    # Second exist channel: battgpt:belongsToElectrode covers ~73% of the
+    # real KG's materials and wires them into the real battery-role
+    # hierarchy (BatteryRole -> {Electrolyte,Positive,Negative,Separator}
+    # Role) rather than just the flat "material sub substance" typing.
+    # Only 4 possible fillers total, so no hard-negative mining needed --
+    # the other 3 role classes are the negatives.
+    n_electrode_rows = 0
+    if battery_role:
+        for mid in train_ids:
+            role = battery_role.get(mid)
+            if not role or role not in ELECTRODE_ROLE_CLASSES:
+                continue
+            v_m = verbalizations[mid]
+            exist_parent = f"{ROLE_ELECTRODE} some {role}"
+            negs = [f"{ROLE_ELECTRODE} some {r}" for r in ELECTRODE_ROLE_CLASSES if r != role]
+            exist_rows.extend(_rows_per_negative(v_m, exist_parent, negs))
+            train_exist.append({"Concept": exist_parent, "role": ROLE_ELECTRODE, "con": role})
+            n_electrode_rows += 1
 
     train = tbox_rep + abox_type + exist_rows
     rng.shuffle(train)
@@ -91,7 +127,8 @@ def merge(
         "n_tbox": len(tbox_rep),
         "n_tbox_unique_axioms": len(tbox_rows),
         "n_abox_type": len(abox_type),
-        "n_abox_exist": len(exist_rows),
+        "n_abox_exist_structure": n_structure_rows,
+        "n_abox_exist_electrode": len(exist_rows) - n_structure_rows,
         "n_train_jsonl": len(train),
         "n_train_exist": len(train_exist),
         "n_train_materials": len(train_ids),
@@ -148,12 +185,14 @@ def main() -> None:
         ents = json.load(f)
     tbox_rows, concept_names, role_names = load_tbox(args.tbox_ont_dir)
     chemsys = {row["mp_id"]: row["chemsys"] for row in ents["materials"]}
+    battery_role = {row["mp_id"]: row.get("battery_role") for row in ents["materials"]}
     ids = [row["mp_id"] for row in ents["materials"]]
     rng = random.Random(args.seed)
     held = set(rng.sample(ids, k=min(args.n_heldout, max(0, len(ids) - 1))))
     train_ids = [i for i in ids if i not in held]
     train, exist, counts = merge(
-        verbal, crystals, train_ids, chemsys, tbox_rows, concept_names, seed=args.seed
+        verbal, crystals, train_ids, chemsys, tbox_rows, concept_names,
+        battery_role=battery_role, seed=args.seed,
     )
     counts["heldout_ids"] = sorted(held)
     counts["train_ids"] = train_ids
