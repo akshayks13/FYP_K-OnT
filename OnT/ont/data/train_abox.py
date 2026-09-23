@@ -207,6 +207,7 @@ def train(
     batch_size: int,
     lr: float,
     seed: int,
+    clustering_loss_weight: float = 1.0,
 ) -> OntologyTransformer:
     dataset = load_local_dataset(str(data_dir))
     logger.info("Train rows: %d  exist: %d", len(dataset["train"]), len(dataset["train_exist"]))
@@ -214,7 +215,7 @@ def train(
     model = OntologyTransformer(hit_model, role_emd_mode="sentenceEmbedding", role_model_mode="rotation")
     hit_loss = HierarchyTransformerLoss(
         model=model.hit_model,
-        clustering_loss_weight=1.0,
+        clustering_loss_weight=clustering_loss_weight,
         clustering_loss_margin=3.0,
         centripetal_loss_weight=1.0,
         centripetal_loss_margin=0.5,
@@ -270,6 +271,8 @@ def main() -> int:
     p.add_argument("--n-heldout", type=int, default=200)
     p.add_argument("--seed", type=int, default=8888)
     p.add_argument("--ranking-pool-size", type=int, default=50)
+    p.add_argument("--tbox-oversample-ratio", type=float, default=1.0, help="TBox:ABox-type row ratio; >1 gives the small real TBox axiom set more relative weight")
+    p.add_argument("--clustering-loss-weight", type=float, default=1.0)
     p.add_argument("--abox-dir", type=Path, default=ONT_ROOT / "data" / "battgpt_abox_full")
     p.add_argument("--tbox-ont-dir", type=Path, default=ONT_ROOT / "data" / "battgpt_tbox_ont")
     p.add_argument("--force-extract", action="store_true", help="Re-extract even if entities.json already has enough materials")
@@ -314,6 +317,7 @@ def main() -> int:
     train_rows, exist, counts = merge(
         verbal, crystals, train_ids, chemsys, tbox_rows, concept_names,
         battery_role=battery_role, seed=args.seed,
+        tbox_oversample_ratio=args.tbox_oversample_ratio,
     )
     counts["heldout_ids_sample"] = sorted(held)[:20]
     counts["n_heldout"] = len(held)
@@ -331,7 +335,10 @@ def main() -> int:
 
     t0 = time.time()
     torch.manual_seed(args.seed)
-    model = train(device, abox_dir / "ont_data", abox_dir / "train_out", args.epochs, args.batch_size, args.lr, args.seed)
+    model = train(
+        device, abox_dir / "ont_data", abox_dir / "train_out", args.epochs, args.batch_size, args.lr, args.seed,
+        clustering_loss_weight=args.clustering_loss_weight,
+    )
     train_time = time.time() - t0
     logger.info("Training took %.1fs", train_time)
 

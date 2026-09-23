@@ -53,6 +53,18 @@ def _rows_per_negative(child: str, parent: str, negatives: list[str]) -> list[di
     return [{"child": child, "parent": parent, "negative": [neg]} for neg in negatives]
 
 
+def _resample_tbox_row(row: dict, concept_list: list[str], rng: random.Random, k: int = 10) -> dict:
+    """Same (child, parent), fresh random negatives excluding both -- used
+    when oversampling so repeated copies aren't byte-identical rows. A
+    literal `rows * N` repeat gives the optimizer the exact same negative
+    set every time an axiom recurs; measured to under-train clustering on
+    this project's tiny (10-axiom) TBox (see ONT_ABOX_EXTENSION.md S12.5)."""
+    exclude = {row["child"], row["parent"]}
+    pool = [c for c in concept_list if c not in exclude]
+    negs = rng.sample(pool, k=min(k, len(pool)))
+    return {"child": row["child"], "parent": row["parent"], "negative": negs}
+
+
 def merge(
     verbalizations: dict[str, str],
     crystals: dict[str, str],
@@ -63,6 +75,7 @@ def merge(
     battery_role: dict[str, str] | None = None,
     seed: int = 8888,
     n_type_negatives: int = 10,
+    tbox_oversample_ratio: float = 1.0,
 ) -> tuple[list[dict], list[dict], dict]:
     rng = random.Random(seed)
     concept_list = list(concept_names.values())
@@ -73,11 +86,18 @@ def merge(
         negs = rng.sample(type_pool, k=min(n_type_negatives, len(type_pool)))
         abox_type.extend(_rows_per_negative(verbalizations[mid], TRUE_TYPE, negs))
 
-    # ~1:1 TBox vs ABox type (plan default). Repeat the (small) real TBox
-    # axiom set so it isn't drowned by thousands of ABox type rows.
+    # TBox vs ABox type ratio (plan default ~1:1; tbox_oversample_ratio > 1
+    # gives the small, hard-to-learn real TBox axiom set more relative
+    # weight). Each repetition gets freshly resampled negatives rather than
+    # literally duplicating rows.
     if abox_type and tbox_rows:
-        tbox_rep = tbox_rows * max(1, (len(abox_type) + len(tbox_rows) - 1) // len(tbox_rows))
-        tbox_rep = tbox_rep[: len(abox_type)]
+        target_tbox = max(len(tbox_rows), round(len(abox_type) * tbox_oversample_ratio))
+        n_copies = max(1, -(-target_tbox // len(tbox_rows)))
+        tbox_rep = [
+            _resample_tbox_row(row, concept_list, rng)
+            for _ in range(n_copies)
+            for row in tbox_rows
+        ][:target_tbox]
     else:
         tbox_rep = list(tbox_rows)
 
@@ -176,6 +196,7 @@ def main() -> None:
     p.add_argument("--tbox-ont-dir", type=Path, default=TBOX_ONT_DIR)
     p.add_argument("--n-heldout", type=int, default=4)
     p.add_argument("--seed", type=int, default=8888)
+    p.add_argument("--tbox-oversample-ratio", type=float, default=1.0)
     args = p.parse_args()
     with (args.abox_dir / "verbalizations.json").open(encoding="utf-8") as f:
         verbal = json.load(f)
@@ -193,6 +214,7 @@ def main() -> None:
     train, exist, counts = merge(
         verbal, crystals, train_ids, chemsys, tbox_rows, concept_names,
         battery_role=battery_role, seed=args.seed,
+        tbox_oversample_ratio=args.tbox_oversample_ratio,
     )
     counts["heldout_ids"] = sorted(held)
     counts["train_ids"] = train_ids
