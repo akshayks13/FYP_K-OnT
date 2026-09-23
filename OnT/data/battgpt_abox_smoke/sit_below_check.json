@@ -1,0 +1,81 @@
+{
+  "material": "LiMgP (mp-10178)",
+  "true_type": "substance",
+  "base_model": "sentence-transformers/all-MiniLM-L12-v2",
+  "max_steps": 20,
+  "device": "mps",
+  "counts": {
+    "n_tbox": 18,
+    "n_abox_type": 15,
+    "n_abox_exist": 3,
+    "n_train_jsonl": 36,
+    "concept_names": [
+      "entity",
+      "substance",
+      "crystal",
+      "element",
+      "battery role",
+      "space group",
+      "unit cell"
+    ],
+    "note": "concept_names is classes only; V(a) is not listed there"
+  },
+  "before": {
+    "dist_to_class": {
+      "entity": 12.703987121582031,
+      "substance": 10.7864990234375,
+      "crystal": 12.075777053833008,
+      "element": 11.415566444396973,
+      "battery role": 12.816337585449219,
+      "space group": 12.823114395141602,
+      "unit cell": 12.716571807861328
+    },
+    "dist0": {
+      "V(LiMgP)": 6.18390417098999,
+      "entity": 11.872832298278809,
+      "substance": 11.065658569335938,
+      "crystal": 11.946617126464844,
+      "element": 11.155887603759766,
+      "battery role": 11.679333686828613,
+      "space group": 12.193538665771484,
+      "unit cell": 11.923941612243652
+    },
+    "nearest_type": "substance",
+    "sits_under_substance": true,
+    "closer_to_substance_than_crystal": true,
+    "parent_nearer_origin": false
+  },
+  "after": {
+    "dist_to_class": {
+      "entity": 12.09315013885498,
+      "substance": 10.867938041687012,
+      "crystal": 15.065498352050781,
+      "element": 13.509761810302734,
+      "battery role": 15.884344100952148,
+      "space group": 15.434403419494629,
+      "unit cell": 15.127114295959473
+    },
+    "dist0": {
+      "V(LiMgP)": 10.501562118530273,
+      "entity": 7.730536460876465,
+      "substance": 8.476197242736816,
+      "crystal": 11.857414245605469,
+      "element": 10.476324081420898,
+      "battery role": 12.313735008239746,
+      "space group": 12.125086784362793,
+      "unit cell": 11.712068557739258
+    },
+    "nearest_type": "substance",
+    "sits_under_substance": true,
+    "closer_to_substance_than_crystal": true,
+    "parent_nearer_origin": true
+  },
+  "concat": {
+    "v_dim": 384,
+    "x_dim": 7,
+    "z_dim": 391,
+    "note": "z is not in the Poincar\u00e9 ball; 1-material scaler skipped (std would be 0)"
+  },
+  "pass": true,
+  "verdict": "PASS: after OnT training, V(LiMgP) is nearest to substance and closer to substance than to crystal on the Poincar\u00e9 ball."
+}

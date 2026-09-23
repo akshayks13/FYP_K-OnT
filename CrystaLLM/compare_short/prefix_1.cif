@@ -1,0 +1,32 @@
+data_LiFePO4
+_chemical_formula_sum 'Li12 Mn24 O96'
+_cell_volume 1484.8326
+_cell_formula_units_Z 12
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 'x, y, z'
+loop_
+_atom_site_type_symbol
+_atom_site_label
+_atom_site_symmetry_multiplicity
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+Li Li0 4 0.1250 0.1250 0.1250 1
+Li Li1 4 0.1750 0.8250 0.7500 1
+Li Li2 4 0.2500 0.2500 0.0000 1
+Mn Mn3 8 0.0002 0.9998 0.8335 1
+Mn Mn3 8 0.0833 0.2502 0.2501 1
+Mn Mn4 8 0.1667 0.5001 0.4164 1
+O O5 8 0.0729 0.2494 0.1466 1
+O O1 8 0.0322 0.2499 0.3535 1
+O O2 8 0.0789 0.7494 0.2502 1
+O O3 8 0.1122 0.4994 0.5003 1
+O O4 8 0.1124 0.0006 0.1424 1
+O O5 8 0.1476 0.4993 0.3141 1
+O O6 8 0.1481 0.9996 0.5712 1
+O O7 8 0.2124 0.1398 0.0000 1
+O O8 8 0.2127 0.1399 0.8138 1
+

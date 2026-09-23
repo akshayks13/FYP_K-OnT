@@ -1,0 +1,82 @@
+{
+  "node_types": [
+    "atomicspecies",
+    "batteryrole",
+    "crystal",
+    "crystalsystem",
+    "element",
+    "material",
+    "property",
+    "spacegroup",
+    "unitcell"
+  ],
+  "relation_types": [
+    "belongstoelectrode",
+    "contains_element",
+    "hascrystalsystem",
+    "haselement",
+    "hasproperty",
+    "hasspacegroup",
+    "hasstructure",
+    "hasunitcell",
+    "usesmaterial"
+  ],
+  "meta_relations": [
+    {
+      "head_type": "material",
+      "relation": "contains_element",
+      "tail_type": "element",
+      "count": 20524
+    },
+    {
+      "head_type": "material",
+      "relation": "hasproperty",
+      "tail_type": "property",
+      "count": 20000
+    },
+    {
+      "head_type": "material",
+      "relation": "hasstructure",
+      "tail_type": "crystal",
+      "count": 5000
+    },
+    {
+      "head_type": "crystal",
+      "relation": "hasunitcell",
+      "tail_type": "unitcell",
+      "count": 5000
+    },
+    {
+      "head_type": "crystal",
+      "relation": "hasspacegroup",
+      "tail_type": "spacegroup",
+      "count": 5000
+    },
+    {
+      "head_type": "crystal",
+      "relation": "hascrystalsystem",
+      "tail_type": "crystalsystem",
+      "count": 5000
+    },
+    {
+      "head_type": "material",
+      "relation": "belongstoelectrode",
+      "tail_type": "batteryrole",
+      "count": 3626
+    },
+    {
+      "head_type": "batteryrole",
+      "relation": "usesmaterial",
+      "tail_type": "material",
+      "count": 3626
+    },
+    {
+      "head_type": "atomicspecies",
+      "relation": "haselement",
+      "tail_type": "element",
+      "count": 83
+    }
+  ],
+  "source": "/Users/akshayks/Desktop/FinalYearProj/output",
+  "source_version": "output hetero_data.pt (Stage 2.3.2)"
+}

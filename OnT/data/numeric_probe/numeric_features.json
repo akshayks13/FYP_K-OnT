@@ -1,0 +1,83 @@
+{
+  "synth-LiMgP-bg0.00": {
+    "band_gap_eV": 0.0,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "synth-LiMgP-bg0.01": {
+    "band_gap_eV": 0.01,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "synth-LiMgP-bg0.35": {
+    "band_gap_eV": 0.35,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "synth-LiMgP-bg1.34": {
+    "band_gap_eV": 1.3386,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "synth-LiMgP-bg3.50": {
+    "band_gap_eV": 3.5,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "synth-LiMgP-bg8.00": {
+    "band_gap_eV": 8.0,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "ctrl-LiZnP-same-numbers": {
+    "band_gap_eV": 0.0,
+    "formation_energy_eV_atom": -0.4008,
+    "energy_above_hull_eV_atom": 0.3505,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "real-mp-10178-LiMgP": {
+    "band_gap_eV": 0.0,
+    "formation_energy_eV_atom": -0.4008086743253963,
+    "energy_above_hull_eV_atom": 0.35048874333333346,
+    "bulk_modulus_GPa": 55.743,
+    "shear_modulus_GPa": 22.303,
+    "is_metal_flag": 1.0,
+    "is_stable_flag": 0.0
+  },
+  "real-mp-10182-LiZnP": {
+    "band_gap_eV": 1.3386,
+    "formation_energy_eV_atom": -0.6558191498809526,
+    "energy_above_hull_eV_atom": 0.0,
+    "bulk_modulus_GPa": 63.12,
+    "shear_modulus_GPa": 51.137,
+    "is_metal_flag": 0.0,
+    "is_stable_flag": 1.0
+  }
+}

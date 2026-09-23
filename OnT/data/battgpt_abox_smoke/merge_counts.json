@@ -1,0 +1,16 @@
+{
+  "n_tbox": 18,
+  "n_abox_type": 15,
+  "n_abox_exist": 3,
+  "n_train_jsonl": 36,
+  "concept_names": [
+    "entity",
+    "substance",
+    "crystal",
+    "element",
+    "battery role",
+    "space group",
+    "unit cell"
+  ],
+  "note": "concept_names is classes only; V(a) is not listed there"
+}

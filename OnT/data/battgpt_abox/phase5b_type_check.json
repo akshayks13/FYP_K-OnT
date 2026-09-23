@@ -1,0 +1,342 @@
+{
+  "n_materials": 20,
+  "train_ids": [
+    "mp-1001790",
+    "mp-10178",
+    "mp-10182",
+    "mp-1018789",
+    "mp-1019708",
+    "mp-1019715",
+    "mp-1019724",
+    "mp-1019782",
+    "mp-1020015",
+    "mp-1020025",
+    "mp-1020026",
+    "mp-1020029",
+    "mp-1020030",
+    "mp-1020032",
+    "mp-1020060",
+    "mp-1020109"
+  ],
+  "heldout_ids": [
+    "mp-1019794",
+    "mp-1020019",
+    "mp-1020057",
+    "mp-1020106"
+  ],
+  "counts": {
+    "n_tbox": 80,
+    "n_abox_type": 80,
+    "n_abox_exist": 32,
+    "n_train_jsonl": 192,
+    "n_train_exist": 16,
+    "n_train_materials": 16,
+    "concept_names": [
+      "entity",
+      "substance",
+      "crystal",
+      "element",
+      "battery role",
+      "space group",
+      "unit cell"
+    ],
+    "heldout_ids": [
+      "mp-1019794",
+      "mp-1020019",
+      "mp-1020057",
+      "mp-1020106"
+    ],
+    "train_ids": [
+      "mp-1001790",
+      "mp-10178",
+      "mp-10182",
+      "mp-1018789",
+      "mp-1019708",
+      "mp-1019715",
+      "mp-1019724",
+      "mp-1019782",
+      "mp-1020015",
+      "mp-1020025",
+      "mp-1020026",
+      "mp-1020029",
+      "mp-1020030",
+      "mp-1020032",
+      "mp-1020060",
+      "mp-1020109"
+    ]
+  },
+  "epochs": 1,
+  "device": "mps",
+  "before_heldout": {
+    "n": 4,
+    "type_accuracy": 1.0,
+    "closer_than_crystal": 1.0,
+    "parent_nearer_origin": 0.0,
+    "rows": [
+      {
+        "mp_id": "mp-1019794",
+        "nearest_type": "substance",
+        "dist_substance": 10.85667896270752,
+        "dist_crystal": 12.146733283996582,
+        "dist_element": 11.05444049835205,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": false
+      },
+      {
+        "mp_id": "mp-1020019",
+        "nearest_type": "substance",
+        "dist_substance": 10.80462646484375,
+        "dist_crystal": 12.15035629272461,
+        "dist_element": 11.32550048828125,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": false
+      },
+      {
+        "mp_id": "mp-1020057",
+        "nearest_type": "substance",
+        "dist_substance": 10.89638900756836,
+        "dist_crystal": 12.317266464233398,
+        "dist_element": 11.432292938232422,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": false
+      },
+      {
+        "mp_id": "mp-1020106",
+        "nearest_type": "substance",
+        "dist_substance": 10.673652648925781,
+        "dist_crystal": 12.045792579650879,
+        "dist_element": 11.23512077331543,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": false
+      }
+    ]
+  },
+  "after_heldout": {
+    "n": 4,
+    "type_accuracy": 1.0,
+    "closer_than_crystal": 1.0,
+    "parent_nearer_origin": 1.0,
+    "rows": [
+      {
+        "mp_id": "mp-1019794",
+        "nearest_type": "substance",
+        "dist_substance": 9.955561637878418,
+        "dist_crystal": 13.937520027160645,
+        "dist_element": 12.103949546813965,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020019",
+        "nearest_type": "substance",
+        "dist_substance": 9.734652519226074,
+        "dist_crystal": 13.763810157775879,
+        "dist_element": 12.239045143127441,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020057",
+        "nearest_type": "substance",
+        "dist_substance": 10.105948448181152,
+        "dist_crystal": 14.132169723510742,
+        "dist_element": 12.489521026611328,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020106",
+        "nearest_type": "substance",
+        "dist_substance": 10.1991605758667,
+        "dist_crystal": 14.05620288848877,
+        "dist_element": 12.536386489868164,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      }
+    ]
+  },
+  "after_trainset": {
+    "n": 16,
+    "type_accuracy": 1.0,
+    "closer_than_crystal": 1.0,
+    "parent_nearer_origin": 1.0,
+    "rows": [
+      {
+        "mp_id": "mp-1001790",
+        "nearest_type": "substance",
+        "dist_substance": 10.0591459274292,
+        "dist_crystal": 14.0487699508667,
+        "dist_element": 12.238520622253418,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-10178",
+        "nearest_type": "substance",
+        "dist_substance": 9.951896667480469,
+        "dist_crystal": 13.836882591247559,
+        "dist_element": 12.473215103149414,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-10182",
+        "nearest_type": "substance",
+        "dist_substance": 9.59263801574707,
+        "dist_crystal": 13.34822940826416,
+        "dist_element": 12.030080795288086,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1018789",
+        "nearest_type": "substance",
+        "dist_substance": 10.443029403686523,
+        "dist_crystal": 14.533695220947266,
+        "dist_element": 12.509949684143066,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1019708",
+        "nearest_type": "substance",
+        "dist_substance": 9.76053237915039,
+        "dist_crystal": 13.594045639038086,
+        "dist_element": 11.960600852966309,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1019715",
+        "nearest_type": "substance",
+        "dist_substance": 10.123963356018066,
+        "dist_crystal": 13.9290189743042,
+        "dist_element": 12.190559387207031,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1019724",
+        "nearest_type": "substance",
+        "dist_substance": 9.771371841430664,
+        "dist_crystal": 13.951932907104492,
+        "dist_element": 11.923587799072266,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1019782",
+        "nearest_type": "substance",
+        "dist_substance": 9.974045753479004,
+        "dist_crystal": 14.00710678100586,
+        "dist_element": 12.589210510253906,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020015",
+        "nearest_type": "substance",
+        "dist_substance": 9.927360534667969,
+        "dist_crystal": 13.959014892578125,
+        "dist_element": 12.117509841918945,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020025",
+        "nearest_type": "substance",
+        "dist_substance": 10.012120246887207,
+        "dist_crystal": 13.960692405700684,
+        "dist_element": 12.227697372436523,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020026",
+        "nearest_type": "substance",
+        "dist_substance": 9.897740364074707,
+        "dist_crystal": 14.209604263305664,
+        "dist_element": 12.69323444366455,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020029",
+        "nearest_type": "substance",
+        "dist_substance": 10.432076454162598,
+        "dist_crystal": 14.410194396972656,
+        "dist_element": 12.541614532470703,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020030",
+        "nearest_type": "substance",
+        "dist_substance": 9.852622032165527,
+        "dist_crystal": 14.068986892700195,
+        "dist_element": 12.393773078918457,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020032",
+        "nearest_type": "substance",
+        "dist_substance": 10.30959415435791,
+        "dist_crystal": 14.391190528869629,
+        "dist_element": 12.540084838867188,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020060",
+        "nearest_type": "substance",
+        "dist_substance": 10.119057655334473,
+        "dist_crystal": 13.976500511169434,
+        "dist_element": 12.158951759338379,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      },
+      {
+        "mp_id": "mp-1020109",
+        "nearest_type": "substance",
+        "dist_substance": 10.037467956542969,
+        "dist_crystal": 13.921926498413086,
+        "dist_element": 12.27634048461914,
+        "sits_under_substance": true,
+        "closer_than_crystal": true,
+        "parent_nearer_origin": true
+      }
+    ]
+  },
+  "crowding_train_v": {
+    "n": 16,
+    "mean_pairwise_dist": 5.726487010717392,
+    "min_pairwise_dist": 2.2296605110168457,
+    "max_pairwise_dist": 7.372924327850342
+  },
+  "pass": true,
+  "verdict": "PASS: held-out type accuracy 100% (4 materials)."
+}

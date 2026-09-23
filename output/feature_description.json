@@ -1,0 +1,131 @@
+{
+  "Material": {
+    "shape": [
+      5000,
+      11
+    ],
+    "columns": [
+      "band_gap_eV",
+      "formation_energy_eV_atom",
+      "energy_above_hull_eV_atom",
+      "density_g_cm3",
+      "volume_ang3",
+      "e_fermi_eV",
+      "bulk_modulus_GPa",
+      "shear_modulus_GPa",
+      "total_magnetization_muB",
+      "is_metal_flag",
+      "is_stable_flag"
+    ]
+  },
+  "Crystal": {
+    "shape": [
+      5000,
+      1
+    ],
+    "columns": [
+      "num_sites"
+    ]
+  },
+  "UnitCell": {
+    "shape": [
+      5000,
+      6
+    ],
+    "columns": [
+      "lattice_a",
+      "lattice_b",
+      "lattice_c",
+      "alpha",
+      "beta",
+      "gamma"
+    ]
+  },
+  "AtomicSite": {
+    "shape": [
+      156630,
+      4
+    ],
+    "columns": [
+      "fractional_x",
+      "fractional_y",
+      "fractional_z",
+      "coordination_number"
+    ]
+  },
+  "AtomicSpecies": {
+    "shape": [
+      83,
+      5
+    ],
+    "columns": [
+      "atomic_number",
+      "atomic_mass",
+      "electronegativity",
+      "valence_electrons",
+      "oxidation_state"
+    ]
+  },
+  "Element": {
+    "shape": [
+      83,
+      7
+    ],
+    "columns": [
+      "atomic_number",
+      "atomic_mass",
+      "group",
+      "period",
+      "electronegativity",
+      "covalent_radius",
+      "valence_electrons"
+    ]
+  },
+  "SpaceGroup": {
+    "shape": [
+      155,
+      1
+    ],
+    "columns": [
+      "spacegroup_number"
+    ]
+  },
+  "CrystalSystem": {
+    "shape": [
+      7,
+      1
+    ],
+    "columns": [
+      "crystal_system_code"
+    ]
+  },
+  "Property": {
+    "shape": [
+      35565,
+      1
+    ],
+    "columns": [
+      "scalar_value"
+    ]
+  },
+  "BatteryRole": {
+    "shape": [
+      4,
+      1
+    ],
+    "columns": [
+      "role_code"
+    ]
+  },
+  "EdgeAttributes": {
+    "AtomicSite -> hasBondTo -> AtomicSite": {
+      "shape": [
+        596434,
+        1
+      ],
+      "columns": [
+        "distance_angstrom"
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+data_Li3Mn2NiO6
+loop_
+_atom_type_symbol
+_atom_type_electronegativity
+_atom_type_radius
+_atom_type_ionic_radius
+_atom_type_oxidation_number
+Li 0.9800 1.4500 0.9000 1.0
+Mn 1.5500 1.4000 0.8300 2.0
+Ni 1.9100 1.3500 0.5600 3.0
+O 3.4400 0.6000 1.2600 -2.0
+_symmetry_space_group_name_H-M 'P 1'
+_cell_length_a 5.09655367
+_cell_length_b 5.09655503
+_cell_length_c 5.12094399
+_cell_angle_alpha 79.94327663
+_cell_angle_beta 71.34478049
+_cell_angle_gamma 61.19426469
+_symmetry_Int_Tables_number 1
+_chemical_formula_structural Li3Mn2NiO6
+_chemical_formula_sum 'Li3 Mn2 Ni1 O6'
+_cell_volume 110.39879558
+_cell_formula_units_Z 1
+loop_
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+ 1 'x, y, z'
+loop_
+ _atom_site_type_symbol
+ _atom_site_label
+ _atom_site_symmetry_multiplicity
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_occupancy
+Li   'x, 'x, '
+  7 Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li  1 0.4957 0.7258 0.5424 0.9608 0.2900 1
+ Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li  1 0.  1 0.0000   0.0000 0.0000 0.5000 0.0000 0.0000 1
+ Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li Li                                                             0.3530 0.0450 0.6883 0.0525 0.3052 1
+ Li Li

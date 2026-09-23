@@ -1,0 +1,41 @@
+{
+  "n_tbox": 80,
+  "n_abox_type": 80,
+  "n_abox_exist": 32,
+  "n_train_jsonl": 192,
+  "n_train_exist": 16,
+  "n_train_materials": 16,
+  "concept_names": [
+    "entity",
+    "substance",
+    "crystal",
+    "element",
+    "battery role",
+    "space group",
+    "unit cell"
+  ],
+  "heldout_ids": [
+    "mp-1019794",
+    "mp-1020019",
+    "mp-1020057",
+    "mp-1020106"
+  ],
+  "train_ids": [
+    "mp-1001790",
+    "mp-10178",
+    "mp-10182",
+    "mp-1018789",
+    "mp-1019708",
+    "mp-1019715",
+    "mp-1019724",
+    "mp-1019782",
+    "mp-1020015",
+    "mp-1020025",
+    "mp-1020026",
+    "mp-1020029",
+    "mp-1020030",
+    "mp-1020032",
+    "mp-1020060",
+    "mp-1020109"
+  ]
+}

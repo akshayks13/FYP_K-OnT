@@ -1,0 +1,132 @@
+# OnT (Language Models as Ontology Encoder)
+
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow)](https://huggingface.co/collections/Hui97/ontology-transformer-68e8fdea10cba273bfdc687c)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17314434.svg)](https://zenodo.org/records/17314434)
+
+
+
+## Project Overview
+OnT is a language model-based framework for ontology embeddings, enabling effective representation of concepts as points in hyperbolic space and axioms as hierarchical relationships between concepts. Built upon the [HierarchyTransformer](https://github.com/KRR-Oxford/HierarchyTransformers), this implementation provides enhanced capabilities for ontological reasoning through specialized embedding techniques such as concept rotation, transition, and existential quantifier representation. The model has been trained on various biomedical ontologies including GO, GALEN, and ANATOMY datasets. For the test of geometric-embedding methods, please refer to the [BoxSquaredEL](https://github.com/KRR-Oxford/BoxSquaredEL) and [TransBox](https://github.com/HuiYang1997/TransBox).
+
+## Features
+- Hyperbolic embeddings for ontology concept encoding
+- Modeling of hierarchical relationships between concepts
+- Support for role embeddings as rotations over hyperbolic spaces
+
+## Installation via pip
+ 
+The easiest way to get started is to install the package from PyPI [ontology-transformer](https://pypi.org/project/ontology-transformer):
+ 
+```bash
+pip install ontology-transformer
+```
+
+The distribution is named `ontology-transformer`, while its Python import package is
+lowercase `ont`. The root-level `OnT.py` file is retained as legacy research code and
+is not the module installed from PyPI.
+ 
+You can **fine-tune the model directly from your OWL ontology file** without any manual preprocessing:
+ 
+```python
+from ont import OntologyTransformer
+ 
+# Simply provide your OWL file path - that's it!
+model = OntologyTransformer.fit(
+    owl_path="path/to/your/ontology.owl",  # Your ontology file
+    output_dir="./my_ontology_model",
+    num_epochs=5,
+    batch_size=128,
+    eval_ratio=0.1  # Use 10% for evaluation
+)
+ 
+# The model is now fine-tuned on your ontology
+# Use it immediately for encoding
+embeddings = model.encode(["YourConcept1", "YourConcept2"])
+ 
+# Save for later use
+model.save("./my_ontology_model/final")
+```
+
+
+## Project Structure
+**The data and models folders should be downloaded and unzipped to the root directory. The Google Drive links are all anonymous.**
+- `OnT.py`: Main model implementation containing the OntologyTransformer class
+- `data/`: Contains training and testing data, download from [here](https://drive.google.com/file/d/1pqHKdj0R-M45ny44xwhsL3n3zeZORsvz/view?usp=drive_link) or from Zenodo [View Dataset on Zenodo](https://zenodo.org/records/17314434)
+
+- `models/`: Stores pre-trained and fine-tuned models, download from [here](https://drive.google.com/file/d/1t9xWcLHoEE55F0bOPMCw5jltWBxHc2vR/view?usp=drive_link) or from huggingface [View Models on Hugging Face](https://huggingface.co/collections/Hui97/ontology-transformer-68e8fdea10cba273bfdc687c)
+
+- `normalization/`: Scripts for normalizing the EL part of a given ontology. See `normalization/Readme.md` for details.
+
+
+
+## Installation from Github 
+We recommend using Conda for a reproducible setup. The steps below install PyTorch, HierarchyTransformers, and a compatible `sentence-transformers` version, then perform a quick verification.
+
+### 1) Create and activate Conda environment
+```bash
+conda create -y -n ont python=3.12
+conda activate ont
+```
+
+### 2) Install PyTorch (GPU, CUDA 12.1)
+```bash
+conda install -y pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
+```
+
+### 3) Install HierarchyTransformers and sentence-transformers
+- `ontology-transformer` supports `sentence-transformers>=3.0`, including 6.x; no 3.4.0 pin is required.
+
+```bash
+pip install git+https://github.com/KRR-Oxford/HierarchyTransformers.git
+pip install 'sentence-transformers>=3.0'
+```
+
+## Usage
+Then load the model and use it for inference or training as follows.
+
+```python
+import torch
+from ont import OntologyTransformer
+
+# Load from Hugging Face (recommended)
+ont = OntologyTransformer.from_pretrained('Hui97/OnT-MiniLM-L12-galen')
+
+
+# entity names to be encoded.
+entity_names = ["continuant", "occurrent", "independent continuant", "process"]
+
+# get the entity embeddings
+entity_embeddings = ont.encode(entity_names)
+
+# role sentences to be encoded.
+role_sentences = ["application attribute", "attribute", "chemical modifier", "chemical process modifier attribute"]
+
+# get the role embeddings, consist of the rotation and scaling (regarded as 1 by default for model uploaded to huggingface)
+role_rotations, _ = ont.encode_roles(role_sentences)
+
+```
+
+
+For training, run the following command. Remember to update the **dataset_path** and **dataset_name** in `config.yaml` :
+```
+python train_ont.py -c config.yaml
+```
+
+## Available Pre-trained Models
+
+The following models are available on Hugging Face and can be loaded directly:
+
+| Model Name | Base Model | Dimension | Training Dataset |
+|------------|------------|-----------|------------------|
+| `Hui97/OnT-MPNet-galen` | MPNet | 768 | GALEN |
+| `Hui97/OnT-MPNet-anatomy` | MPNet | 768 | ANATOMY |
+| `Hui97/OnT-MPNet-go` | MPNet | 768 | GO |
+| `Hui97/OnT-MiniLM-L12-galen` | MiniLM-L12 | 384 | GALEN |
+| `Hui97/OnT-MiniLM-L12-anatomy` | MiniLM-L12 | 384 | ANATOMY |
+| `Hui97/OnT-MiniLM-L12-go` | MiniLM-L12 | 384 | GO |
+
+All models can be loaded using:
+```python
+from ont import OntologyTransformer
+ont = OntologyTransformer.from_pretrained('Hui97/OnT-MiniLM-L12-galen')
+```

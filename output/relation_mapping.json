@@ -1,0 +1,13 @@
+{
+  "Material -> hasStructure -> Crystal": "https://w3id.org/battgpt/kg#hasStructure",
+  "Crystal -> hasUnitCell -> UnitCell": "https://w3id.org/battgpt/kg#hasUnitCell",
+  "UnitCell -> containsSite -> AtomicSite": "https://w3id.org/battgpt/kg#containsSite",
+  "AtomicSite -> containsSpecies -> AtomicSpecies": "https://w3id.org/battgpt/kg#containsSpecies",
+  "AtomicSpecies -> hasElement -> Element": "https://w3id.org/battgpt/kg#hasElement",
+  "AtomicSite -> hasBondTo -> AtomicSite": "https://w3id.org/battgpt/kg#hasBondTo",
+  "Material -> hasProperty -> Property": "https://w3id.org/emmo#EMMO_e1097637_70d2_4895_973f_2396f04fa204",
+  "Crystal -> hasSpaceGroup -> SpaceGroup": "https://w3id.org/battgpt/kg#hasSpaceGroup",
+  "Crystal -> hasCrystalSystem -> CrystalSystem": "https://w3id.org/battgpt/kg#hasCrystalSystem",
+  "Material -> belongsToElectrode -> BatteryRole": "https://w3id.org/battgpt/kg#belongsToElectrode",
+  "BatteryRole -> usesMaterial -> Material": "https://w3id.org/battgpt/kg#usesMaterial"
+}

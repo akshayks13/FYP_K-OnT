@@ -1,0 +1,55 @@
+data_LiFePO4
+loop_
+ _atom_type_symbol
+ _atom_type_electronegativity
+ _atom_type_radius
+ _atom_type_ionic_radius
+ Li 0.9800 1.4500 0.9000
+ Fe 1.8300 1.4000 0.8525
+ P 2.1900 1 0.5500
+ O 3.4400 0.6000 1.2600
+_symmetry_space_group_name_H-M P-1
+_cell_length_a 5.4061
+_cell_length_b 5.6375
+_cell_length_c 6.4571
+_cell_angle_alpha 66.0230
+_cell_angle_beta 86.3681
+_cell_angle_gamma 88.3540
+_symmetry_Int_Tables_number 2
+_chemical_formula_structural LiFePO4
+_chemical_formula_sum 'Li2 Fe2 P2 O8'
+_cell_volume 179.5198
+_cell_formula_units_Z 2
+loop_
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+ 1 'x, y, z'
+loop_
+ _atom_site_type_symbol
+ _atom_site_label
+ _atom_site_symmetry_multiplicity
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_occupancy
+ Li Li0 2 0.2744 0.2460 0.3430 1
+ Fe Fe1 2 0.2704 0.2355 0.7500 1
+ P P2 2 0.2244 0.7464 0.4349 1
+ O O3 2 0.0511 0.5495 0.3025 1
+ O O4 2 0.0801 0.8918 0.6754 1
+ O O5 2 0.4091 0.7748 0.0977 1
+ O O6 2 0.4579 0.6526 0.5162 1
+ F F7 2 0.2560 0.2313 0.0022 1
+ 
+ F8 2 0.2661 0.7861 0.4301 1
+ 
+ 
+ F F9 2 0.3615 0.2365 0.5266 1
+ F F10 2 0.3796 0.0201 0.2822 1
+ F F11 2 0.4640 0.5718 0.8074 1
+ F F12 2 0.4745 0.9188 0.6956 1
+ F F13 2 0.4987 0.3806 0.1902 1
+ F F14 2 0.4999 0.2795 0.7530 1
+ F F15 1 0.0000 0.5000 0.5000 1
+ F F16 1 0.0000 0.0000 0.0000 1
+ F F17 1 

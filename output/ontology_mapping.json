@@ -1,0 +1,13 @@
+{
+  "Material": "https://w3id.org/emmo/domain/chemical-substance#Substance",
+  "Crystal": "https://w3id.org/emmo/domain/crystallography#Crystal",
+  "UnitCell": "https://w3id.org/emmo/domain/crystallography#UnitCell",
+  "AtomicSite": "https://w3id.org/emmo/domain/crystallography#AtomicSite",
+  "AtomicSpecies": "https://w3id.org/emmo/domain/chemical-substance#AtomicSpecies",
+  "Element": "https://w3id.org/emmo/domain/chemical-substance#Element",
+  "SpaceGroup": "https://w3id.org/emmo/domain/crystallography#SpaceGroup",
+  "CrystalSystem": "https://w3id.org/emmo/domain/crystallography#CrystalSystem",
+  "Property": "https://w3id.org/emmo#EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba",
+  "BatteryRole": "https://w3id.org/battgpt/kg#BatteryRole",
+  "CrystalBond": "https://w3id.org/battgpt/kg#CrystalBond"
+}

@@ -1,0 +1,193 @@
+{
+  "feature_names": [
+    "band_gap_eV",
+    "formation_energy_eV_atom",
+    "energy_above_hull_eV_atom",
+    "bulk_modulus_GPa",
+    "shear_modulus_GPa",
+    "is_metal_flag",
+    "is_stable_flag"
+  ],
+  "materials": {
+    "mp-1001790": {
+      "band_gap_eV": 0.17820000000000003,
+      "formation_energy_eV_atom": -0.6248585295833333,
+      "energy_above_hull_eV_atom": 0.23903239732142811,
+      "bulk_modulus_GPa": 36.573,
+      "shear_modulus_GPa": 18.166,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-10178": {
+      "band_gap_eV": 0.0,
+      "formation_energy_eV_atom": -0.4008086743253963,
+      "energy_above_hull_eV_atom": 0.35048874333333346,
+      "bulk_modulus_GPa": 55.743,
+      "shear_modulus_GPa": 22.303,
+      "is_metal_flag": 1.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-10182": {
+      "band_gap_eV": 1.3386,
+      "formation_energy_eV_atom": -0.6558191498809526,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 63.12,
+      "shear_modulus_GPa": 51.137,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1018789": {
+      "band_gap_eV": 0.0,
+      "formation_energy_eV_atom": -1.042903046111111,
+      "energy_above_hull_eV_atom": 0.08308098404761921,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 1.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1019708": {
+      "band_gap_eV": 4.8877999999999995,
+      "formation_energy_eV_atom": -2.939747212689518,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1019715": {
+      "band_gap_eV": 5.0869,
+      "formation_energy_eV_atom": -2.8415637359993613,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1019724": {
+      "band_gap_eV": 0.0,
+      "formation_energy_eV_atom": -2.744163702083336,
+      "energy_above_hull_eV_atom": 0.182168363749998,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 1.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1019782": {
+      "band_gap_eV": 5.3944,
+      "formation_energy_eV_atom": -2.7396110654489796,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1019794": {
+      "band_gap_eV": 4.876,
+      "formation_energy_eV_atom": -2.6719741380283883,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1020015": {
+      "band_gap_eV": 5.4366,
+      "formation_energy_eV_atom": -2.792678821254252,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1020019": {
+      "band_gap_eV": 5.6015,
+      "formation_energy_eV_atom": -2.1128154435515873,
+      "energy_above_hull_eV_atom": 0.05236053875000035,
+      "bulk_modulus_GPa": 87.664,
+      "shear_modulus_GPa": 60.241,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020025": {
+      "band_gap_eV": 6.1396999999999995,
+      "formation_energy_eV_atom": -2.772310767037036,
+      "energy_above_hull_eV_atom": 0.045089810277806563,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020026": {
+      "band_gap_eV": 6.0842,
+      "formation_energy_eV_atom": -2.8583268912500004,
+      "energy_above_hull_eV_atom": 0.013394735416661696,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020029": {
+      "band_gap_eV": 0.0,
+      "formation_energy_eV_atom": -1.443970638859127,
+      "energy_above_hull_eV_atom": 0.2769724194791676,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 1.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020030": {
+      "band_gap_eV": 3.3829999999999996,
+      "formation_energy_eV_atom": -2.504243655333333,
+      "energy_above_hull_eV_atom": 0.04249637650000171,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020032": {
+      "band_gap_eV": 0.0,
+      "formation_energy_eV_atom": -0.5557563297222217,
+      "energy_above_hull_eV_atom": 0.29496305104166787,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 1.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020057": {
+      "band_gap_eV": 3.7336,
+      "formation_energy_eV_atom": -3.1725252102083337,
+      "energy_above_hull_eV_atom": 0.023029582187499287,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 0.0
+    },
+    "mp-1020060": {
+      "band_gap_eV": 5.51,
+      "formation_energy_eV_atom": -1.9081729228749993,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1020106": {
+      "band_gap_eV": 6.3873999999999995,
+      "formation_energy_eV_atom": -2.120887938541666,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    },
+    "mp-1020109": {
+      "band_gap_eV": 5.3095,
+      "formation_energy_eV_atom": -2.9729691145701045,
+      "energy_above_hull_eV_atom": 0.0,
+      "bulk_modulus_GPa": 0.0,
+      "shear_modulus_GPa": 0.0,
+      "is_metal_flag": 0.0,
+      "is_stable_flag": 1.0
+    }
+  }
+}

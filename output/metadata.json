@@ -1,0 +1,41 @@
+{
+  "source": "/Users/akshayks/Desktop/FinalYearProj/output/battery_kg.ttl",
+  "num_materials": 5000,
+  "num_crystals": 5000,
+  "num_unit_cells": 5000,
+  "num_atomic_sites": 156630,
+  "num_atomic_species": 83,
+  "num_elements": 83,
+  "num_space_groups": 155,
+  "num_crystal_systems": 7,
+  "num_properties": 35565,
+  "num_battery_roles": 4,
+  "num_bonds": 596434,
+  "node_types": [
+    "Material",
+    "Crystal",
+    "UnitCell",
+    "AtomicSite",
+    "AtomicSpecies",
+    "Element",
+    "SpaceGroup",
+    "CrystalSystem",
+    "Property",
+    "BatteryRole"
+  ],
+  "edge_types": [
+    "Material_hasStructure_Crystal",
+    "Crystal_hasUnitCell_UnitCell",
+    "UnitCell_containsSite_AtomicSite",
+    "AtomicSite_containsSpecies_AtomicSpecies",
+    "AtomicSpecies_hasElement_Element",
+    "Crystal_hasSpaceGroup_SpaceGroup",
+    "Crystal_hasCrystalSystem_CrystalSystem",
+    "Material_belongsToElectrode_BatteryRole",
+    "BatteryRole_usesMaterial_Material",
+    "Material_hasProperty_Property",
+    "AtomicSite_hasBondTo_AtomicSite"
+  ],
+  "elapsed_sec": 207.25,
+  "turtle_blocks_seen": 960664
+}

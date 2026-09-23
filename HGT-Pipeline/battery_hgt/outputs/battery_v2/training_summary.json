@@ -1,0 +1,11 @@
+{
+  "epochs": 30,
+  "input_mode": "hetero_features",
+  "train_edges": 54287,
+  "val_edges_in_vocab": 6785,
+  "best_val_mrr": 0.065771,
+  "best_epoch": 30,
+  "checkpoint": "models/battery_v2/hgt_checkpoint.pt",
+  "mappings": "models/battery_v2/hgt_mappings.pt",
+  "training_log_csv": "outputs/battery_v2/training_log.csv"
+}

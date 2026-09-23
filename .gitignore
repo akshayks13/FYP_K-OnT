@@ -1,0 +1,34 @@
+.env
+.DS_Store
+__pycache__/
+*.pyc
+*.bak_zeros
+
+# Python virtual env
+.venv/
+
+# Not part of this repo (separate baseline, own upstream repo)
+BoxSquaredEL/
+
+# Regenerable / duplicate KG dumps (source TTL is 527MB, over GitHub's
+# 100MB hard limit; regenerate from pipeline/ + Materials Project API)
+output/battery_kg.ttl
+output/battery_kg.jsonld
+output/battery_kg.rdf
+output/edge_mapping.json
+output/node_mapping.json
+output/hetero_data.pt
+output/hetero_from_rdf/
+output/hetero_from_rdf_smoke/
+
+# Model weights / training checkpoints (regenerable, large)
+*.safetensors
+*.pt
+
+# Local archives and experiment dumps
+Archive.zip
+*.tar.gz
+CrystaLLM/kg_finetune_cifs/
+CrystaLLM/compare_out/
+CrystaLLM/sample_kg_*.cif
+HGT-Pipeline/battery_hgt/models/battery_hetero_smoke/

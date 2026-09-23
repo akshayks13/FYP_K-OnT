@@ -1,0 +1,132 @@
+@prefix battgpt: <https://w3id.org/battgpt/kg#> .
+@prefix chsub: <https://w3id.org/emmo/domain/chemical-substance#> .
+@prefix cryst: <https://w3id.org/emmo/domain/crystallography#> .
+@prefix emmo: <https://w3id.org/emmo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+<https://w3id.org/battgpt/kg/material/mp-19017> a chsub:Substance ;
+    battgpt:hasFormula "LiFePO4"^^xsd:string ;
+    battgpt:hasMaterialProjectId "mp-19017"^^xsd:string ;
+    battgpt:isMetal false ;
+    battgpt:isStable true ;
+    battgpt:hasStructure <https://w3id.org/battgpt/kg/crystal/mp-19017> ;
+    battgpt:belongsToElectrode battgpt:PositiveElectrodeRoleIndividual ;
+    emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 <https://w3id.org/battgpt/kg/property/mp-19017/band_gap>,
+        <https://w3id.org/battgpt/kg/property/mp-19017/formation_energy_per_atom>,
+        <https://w3id.org/battgpt/kg/property/mp-19017/density> .
+
+<https://w3id.org/battgpt/kg/material/mp-22526> a chsub:Substance ;
+    battgpt:hasFormula "LiCoO2"^^xsd:string ;
+    battgpt:hasMaterialProjectId "mp-22526"^^xsd:string ;
+    battgpt:isMetal false ;
+    battgpt:isStable true ;
+    battgpt:hasStructure <https://w3id.org/battgpt/kg/crystal/mp-22526> ;
+    battgpt:belongsToElectrode battgpt:PositiveElectrodeRoleIndividual ;
+    emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 <https://w3id.org/battgpt/kg/property/mp-22526/band_gap> .
+
+<https://w3id.org/battgpt/kg/crystal/mp-19017> a cryst:Crystal ;
+    battgpt:hasUnitCell <https://w3id.org/battgpt/kg/unitcell/mp-19017> ;
+    battgpt:hasSpaceGroup <https://w3id.org/battgpt/kg/spacegroup/62> ;
+    battgpt:hasCrystalSystem <https://w3id.org/battgpt/kg/crystalsystem/orthorhombic> .
+
+<https://w3id.org/battgpt/kg/crystal/mp-22526> a cryst:Crystal ;
+    battgpt:hasUnitCell <https://w3id.org/battgpt/kg/unitcell/mp-22526> ;
+    battgpt:hasSpaceGroup <https://w3id.org/battgpt/kg/spacegroup/166> ;
+    battgpt:hasCrystalSystem <https://w3id.org/battgpt/kg/crystalsystem/trigonal> .
+
+<https://w3id.org/battgpt/kg/unitcell/mp-19017> a cryst:UnitCell ;
+    battgpt:containsSite <https://w3id.org/battgpt/kg/site/mp-19017/0>,
+        <https://w3id.org/battgpt/kg/site/mp-19017/1> ;
+    battgpt:hasLatticea "10.24"^^xsd:double ;
+    battgpt:hasLatticeb "5.97"^^xsd:double ;
+    battgpt:hasLatticec "4.65"^^xsd:double ;
+    battgpt:hasAlpha "90.0"^^xsd:double ;
+    battgpt:hasBeta "90.0"^^xsd:double ;
+    battgpt:hasGamma "90.0"^^xsd:double .
+
+<https://w3id.org/battgpt/kg/unitcell/mp-22526> a cryst:UnitCell ;
+    battgpt:containsSite <https://w3id.org/battgpt/kg/site/mp-22526/0> ;
+    battgpt:hasLatticea "2.82"^^xsd:double ;
+    battgpt:hasLatticeb "2.82"^^xsd:double ;
+    battgpt:hasLatticec "14.05"^^xsd:double ;
+    battgpt:hasAlpha "90.0"^^xsd:double ;
+    battgpt:hasBeta "90.0"^^xsd:double ;
+    battgpt:hasGamma "120.0"^^xsd:double .
+
+<https://w3id.org/battgpt/kg/site/mp-19017/0> a cryst:AtomicSite ;
+    battgpt:containsSpecies <https://w3id.org/battgpt/kg/species/Li_0> ;
+    battgpt:hasFractionalX "0.0"^^xsd:double ;
+    battgpt:hasFractionalY "0.0"^^xsd:double ;
+    battgpt:hasFractionalZ "0.0"^^xsd:double ;
+    battgpt:hasBondTo <https://w3id.org/battgpt/kg/site/mp-19017/1> .
+
+<https://w3id.org/battgpt/kg/site/mp-19017/1> a cryst:AtomicSite ;
+    battgpt:containsSpecies <https://w3id.org/battgpt/kg/species/O_0> ;
+    battgpt:hasFractionalX "0.1"^^xsd:double ;
+    battgpt:hasFractionalY "0.2"^^xsd:double ;
+    battgpt:hasFractionalZ "0.3"^^xsd:double ;
+    battgpt:hasBondTo <https://w3id.org/battgpt/kg/site/mp-19017/0> .
+
+<https://w3id.org/battgpt/kg/site/mp-22526/0> a cryst:AtomicSite ;
+    battgpt:containsSpecies <https://w3id.org/battgpt/kg/species/Li_0> ;
+    battgpt:hasFractionalX "0.0"^^xsd:double ;
+    battgpt:hasFractionalY "0.0"^^xsd:double ;
+    battgpt:hasFractionalZ "0.0"^^xsd:double .
+
+<https://w3id.org/battgpt/kg/bond/mp-19017/0_1> a battgpt:CrystalBond ;
+    battgpt:hasBondDistance "2.14"^^xsd:double ;
+    battgpt:hasCoordinationMethod "CrystalNN"^^xsd:string ;
+    battgpt:hasSourceSite <https://w3id.org/battgpt/kg/site/mp-19017/0> ;
+    battgpt:hasTargetSite <https://w3id.org/battgpt/kg/site/mp-19017/1> .
+
+<https://w3id.org/battgpt/kg/bond/mp-19017/1_0> a battgpt:CrystalBond ;
+    battgpt:hasBondDistance "2.14"^^xsd:double ;
+    battgpt:hasCoordinationMethod "CrystalNN"^^xsd:string ;
+    battgpt:hasSourceSite <https://w3id.org/battgpt/kg/site/mp-19017/1> ;
+    battgpt:hasTargetSite <https://w3id.org/battgpt/kg/site/mp-19017/0> .
+
+<https://w3id.org/battgpt/kg/species/Li_0> a chsub:AtomicSpecies ;
+    battgpt:hasElement <https://w3id.org/battgpt/kg/element/Li> .
+
+<https://w3id.org/battgpt/kg/species/O_0> a chsub:AtomicSpecies ;
+    battgpt:hasElement <https://w3id.org/battgpt/kg/element/O> .
+
+<https://w3id.org/battgpt/kg/element/Li> a chsub:Element ;
+    rdfs:label "Li"@en .
+
+<https://w3id.org/battgpt/kg/element/O> a chsub:Element ;
+    rdfs:label "O"@en .
+
+<https://w3id.org/battgpt/kg/spacegroup/62> a cryst:SpaceGroup ;
+    battgpt:hasSpaceGroupNumber 62 ;
+    battgpt:hasSymmetrySymbol "Pnma"^^xsd:string .
+
+<https://w3id.org/battgpt/kg/spacegroup/166> a cryst:SpaceGroup ;
+    battgpt:hasSpaceGroupNumber 166 ;
+    battgpt:hasSymmetrySymbol "R-3m"^^xsd:string .
+
+<https://w3id.org/battgpt/kg/crystalsystem/orthorhombic> a cryst:CrystalSystem ;
+    rdfs:label "orthorhombic"@en .
+
+<https://w3id.org/battgpt/kg/crystalsystem/trigonal> a cryst:CrystalSystem ;
+    rdfs:label "trigonal"@en .
+
+<https://w3id.org/battgpt/kg/property/mp-19017/band_gap> a emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    emmo:EMMO_faf79f53_749d_40b2_807c_d34244c192f4 "3.92"^^xsd:double .
+
+<https://w3id.org/battgpt/kg/property/mp-19017/formation_energy_per_atom> a emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    emmo:EMMO_faf79f53_749d_40b2_807c_d34244c192f4 "-2.48"^^xsd:double .
+
+<https://w3id.org/battgpt/kg/property/mp-19017/density> a emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    emmo:EMMO_faf79f53_749d_40b2_807c_d34244c192f4 "3.6"^^xsd:double .
+
+<https://w3id.org/battgpt/kg/property/mp-22526/band_gap> a emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    emmo:EMMO_faf79f53_749d_40b2_807c_d34244c192f4 "1.1"^^xsd:double .
+
+battgpt:PositiveElectrodeRoleIndividual a owl:NamedIndividual, battgpt:PositiveElectrodeRole ;
+    rdfs:label "Positive Electrode"@en ;
+    battgpt:usesMaterial <https://w3id.org/battgpt/kg/material/mp-19017>,
+        <https://w3id.org/battgpt/kg/material/mp-22526> .

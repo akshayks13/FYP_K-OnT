@@ -1,0 +1,32 @@
+{
+  "embedding_dim": 32,
+  "num_heads": 2,
+  "num_layers": 1,
+  "model_dir": "/Users/akshayks/Desktop/FinalYearProj/HGT-Pipeline/battery_hgt/models/battery_v2",
+  "data_dir": "/Users/akshayks/Desktop/FinalYearProj/HGT-Pipeline/battery_hgt/data/BatteryKG_v2",
+  "mappings_path": "/Users/akshayks/Desktop/FinalYearProj/HGT-Pipeline/battery_hgt/models/battery_v2/hgt_mappings.pt",
+  "node_counts": {
+    "atomicspecies": 83,
+    "batteryrole": 4,
+    "crystal": 5000,
+    "crystalsystem": 7,
+    "element": 83,
+    "material": 5000,
+    "property": 35565,
+    "spacegroup": 155,
+    "unitcell": 5000
+  },
+  "input_mode": "hetero_features",
+  "feature_types": [
+    "atomicspecies",
+    "batteryrole",
+    "crystal",
+    "crystalsystem",
+    "element",
+    "material",
+    "property",
+    "spacegroup",
+    "unitcell"
+  ],
+  "id_types": []
+}

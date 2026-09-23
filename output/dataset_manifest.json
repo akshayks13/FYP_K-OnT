@@ -1,0 +1,28 @@
+{
+  "dataset_version": "2.3.2",
+  "creation_date": "2026-08-05T03:53:23.505155+00:00",
+  "mp_api_version": "v2",
+  "ontology_version": "0.2.2",
+  "emmo_version": "1.0.0-rc2",
+  "battinfo_version": "0.7.0",
+  "counts": {
+    "num_materials": 5000,
+    "num_atomic_sites": 156630,
+    "num_crystal_bonds": 596434,
+    "num_rdf_triples": 8365553,
+    "num_hetero_node_types": 10,
+    "num_hetero_edge_types": 11
+  },
+  "artifact_checksums": {
+    "battery_kg.ttl": "4c4981f4cab10f05aa52d73c880c1c940c097e72387fa4b3bef5f625245e4904",
+    "battery_kg.rdf": "5a2bc8ddd5835882e0e2c116e1e5e5d308db598ce704b6b01fc5acdae8dbc326",
+    "battery_kg.jsonld": "30887008c6ed7e692bbab4b85b4654c8106172ac0848cadfa384554296213980",
+    "hetero_data.pt": "5213f996c7894fab39ffd861b6b153c02ba80edd4e6362c911fb35f39ef0feed",
+    "metadata.json": "7d7d2f53fe732ddf0f2773481931abb38ddb3dc2dc5f7c5305366e1328c4b8e9",
+    "node_mapping.json": "22b3010e522c0ecbcb5e7ed92276f8689ad5fe5d16c1898c8b54f3fa382b31f4",
+    "edge_mapping.json": "611322f68eb399c63d9379fe02f1470611f859868aa330b969505e834f54796f",
+    "relation_mapping.json": "e77a01a1271114a1453ad62e6b969d2b2c557e13504822089141d6dd39955680",
+    "feature_description.json": "5dbe227af1ebbab9444f08bd8c415a3ffcd102eca882beb2f716f7e544433a12",
+    "ontology_mapping.json": "59c022b5c703242888b2c443ede3bc961e1e54677a3f9f72346e70003a6c9208"
+  }
+}
