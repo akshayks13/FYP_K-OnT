@@ -1,0 +1,23 @@
+{
+  "0": "Battery Component Role",
+  "1": "Crystal Connectivity Bond Entity",
+  "2": "Electrolyte Role",
+  "3": "Garnet Solid Electrolyte",
+  "4": "Layered Oxide Cathode",
+  "5": "NASICON Structured Conductor",
+  "6": "Negative Electrode Role",
+  "7": "Olivine Phosphate Cathode",
+  "8": "Positive Electrode Role",
+  "9": "Separator Role",
+  "10": "Spinel Oxide Cathode",
+  "11": "Sulfide Solid Electrolyte",
+  "12": "property",
+  "13": "atomic species",
+  "14": "element",
+  "15": "substance",
+  "16": "atomic site",
+  "17": "crystal",
+  "18": "crystal system",
+  "19": "space group",
+  "20": "unit cell"
+}

@@ -1,4 +1,10 @@
-"""Merge tiny TBox class rows with ABox type + hasStructure rows for OnT."""
+"""Merge the real TBox (from extract_tbox.py + ont/data/prepare.py) with ABox
+type + hasStructure rows for OnT.
+
+TBox rows come straight from battgpt_tbox_ont/train.jsonl (real subClassOf
+axioms verbalised by DeepOnto from battgpt_tbox.owl) -- nothing here invents
+class names or hierarchy edges.
+"""
 from __future__ import annotations
 
 import argparse
@@ -8,31 +14,28 @@ from pathlib import Path
 
 ONT_ROOT = Path(__file__).resolve().parents[2]
 ABOX_DIR = ONT_ROOT / "data" / "battgpt_abox"
+TBOX_ONT_DIR = ONT_ROOT / "data" / "battgpt_tbox_ont"
 
-CLASSES = [
-    "entity",
-    "substance",
-    "crystal",
-    "element",
-    "battery role",
-    "space group",
-    "unit cell",
-]
-TYPE_CLASSES = [c for c in CLASSES if c != "entity"]
 TRUE_TYPE = "substance"
 ROLE = "has structure"
 
 
+def load_tbox(tbox_ont_dir: Path) -> tuple[list[dict], dict[str, str], dict[str, str]]:
+    with (tbox_ont_dir / "train.jsonl").open(encoding="utf-8") as f:
+        tbox_rows = [json.loads(line) for line in f if line.strip()]
+    with (tbox_ont_dir / "concept_names.json").open(encoding="utf-8") as f:
+        concept_names = json.load(f)
+    with (tbox_ont_dir / "role_names.json").open(encoding="utf-8") as f:
+        role_names = json.load(f)
+    if TRUE_TYPE not in concept_names.values():
+        raise ValueError(f"{TRUE_TYPE!r} missing from {tbox_ont_dir}/concept_names.json")
+    if ROLE not in role_names.values():
+        raise ValueError(f"{ROLE!r} missing from {tbox_ont_dir}/role_names.json")
+    return tbox_rows, concept_names, role_names
+
+
 def _rows_per_negative(child: str, parent: str, negatives: list[str]) -> list[dict]:
     return [{"child": child, "parent": parent, "negative": [neg]} for neg in negatives]
-
-
-def build_tbox() -> list[dict]:
-    rows: list[dict] = []
-    for child in TYPE_CLASSES:
-        neg = next((c for c in TYPE_CLASSES if c != child), "entity")
-        rows.extend(_rows_per_negative(child, "entity", [neg]))
-    return rows
 
 
 def merge(
@@ -40,21 +43,27 @@ def merge(
     crystals: dict[str, str],
     train_ids: list[str],
     chemsys: dict[str, str],
+    tbox_rows: list[dict],
+    concept_names: dict[str, str],
     seed: int = 8888,
+    n_type_negatives: int = 10,
 ) -> tuple[list[dict], list[dict], dict]:
     rng = random.Random(seed)
-    tbox = build_tbox()
-    type_negs = [c for c in TYPE_CLASSES if c != TRUE_TYPE]
+    concept_list = list(concept_names.values())
+    type_pool = [c for c in concept_list if c != TRUE_TYPE]
+
     abox_type: list[dict] = []
     for mid in train_ids:
-        abox_type.extend(_rows_per_negative(verbalizations[mid], TRUE_TYPE, type_negs))
+        negs = rng.sample(type_pool, k=min(n_type_negatives, len(type_pool)))
+        abox_type.extend(_rows_per_negative(verbalizations[mid], TRUE_TYPE, negs))
 
-    # ~1:1 TBox vs ABox type (plan default).
-    if abox_type:
-        tbox_rep = tbox * max(1, (len(abox_type) + len(tbox) - 1) // len(tbox))
+    # ~1:1 TBox vs ABox type (plan default). Repeat the (small) real TBox
+    # axiom set so it isn't drowned by thousands of ABox type rows.
+    if abox_type and tbox_rows:
+        tbox_rep = tbox_rows * max(1, (len(abox_type) + len(tbox_rows) - 1) // len(tbox_rows))
         tbox_rep = tbox_rep[: len(abox_type)]
     else:
-        tbox_rep = tbox
+        tbox_rep = list(tbox_rows)
 
     exist_rows: list[dict] = []
     train_exist: list[dict] = []
@@ -80,17 +89,26 @@ def merge(
     rng.shuffle(train)
     counts = {
         "n_tbox": len(tbox_rep),
+        "n_tbox_unique_axioms": len(tbox_rows),
         "n_abox_type": len(abox_type),
         "n_abox_exist": len(exist_rows),
         "n_train_jsonl": len(train),
         "n_train_exist": len(train_exist),
         "n_train_materials": len(train_ids),
-        "concept_names": CLASSES,
+        "n_concepts": len(concept_names),
+        "concept_names": concept_list,
     }
     return train, train_exist, counts
 
 
-def write_ont_data(data_dir: Path, train: list[dict], exist: list[dict], counts: dict) -> None:
+def write_ont_data(
+    data_dir: Path,
+    train: list[dict],
+    exist: list[dict],
+    counts: dict,
+    concept_names: dict[str, str],
+    role_names: dict[str, str],
+) -> None:
     data_dir.mkdir(parents=True, exist_ok=True)
     with (data_dir / "train.jsonl").open("w", encoding="utf-8") as f:
         for row in train:
@@ -100,9 +118,9 @@ def write_ont_data(data_dir: Path, train: list[dict], exist: list[dict], counts:
             f.write(json.dumps(row) + "\n")
     (data_dir / "train_conj.jsonl").write_text("", encoding="utf-8")
     with (data_dir / "concept_names.json").open("w", encoding="utf-8") as f:
-        json.dump({str(i): name for i, name in enumerate(CLASSES)}, f, indent=2)
+        json.dump(concept_names, f, indent=2)
     with (data_dir / "role_names.json").open("w", encoding="utf-8") as f:
-        json.dump({"0": ROLE}, f, indent=2)
+        json.dump(role_names, f, indent=2)
     with (data_dir / "role_inverse.json").open("w", encoding="utf-8") as f:
         json.dump({}, f)
     empty_eval = {
@@ -118,6 +136,7 @@ def write_ont_data(data_dir: Path, train: list[dict], exist: list[dict], counts:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--abox-dir", type=Path, default=ABOX_DIR)
+    p.add_argument("--tbox-ont-dir", type=Path, default=TBOX_ONT_DIR)
     p.add_argument("--n-heldout", type=int, default=4)
     p.add_argument("--seed", type=int, default=8888)
     args = p.parse_args()
@@ -127,16 +146,19 @@ def main() -> None:
         crystals = json.load(f)
     with (args.abox_dir / "entities.json").open(encoding="utf-8") as f:
         ents = json.load(f)
+    tbox_rows, concept_names, role_names = load_tbox(args.tbox_ont_dir)
     chemsys = {row["mp_id"]: row["chemsys"] for row in ents["materials"]}
     ids = [row["mp_id"] for row in ents["materials"]]
     rng = random.Random(args.seed)
     held = set(rng.sample(ids, k=min(args.n_heldout, max(0, len(ids) - 1))))
     train_ids = [i for i in ids if i not in held]
-    train, exist, counts = merge(verbal, crystals, train_ids, chemsys, seed=args.seed)
+    train, exist, counts = merge(
+        verbal, crystals, train_ids, chemsys, tbox_rows, concept_names, seed=args.seed
+    )
     counts["heldout_ids"] = sorted(held)
     counts["train_ids"] = train_ids
-    write_ont_data(args.abox_dir / "ont_data", train, exist, counts)
-    print(json.dumps(counts, indent=2))
+    write_ont_data(args.abox_dir / "ont_data", train, exist, counts, concept_names, role_names)
+    print(json.dumps({k: v for k, v in counts.items() if k not in ("heldout_ids", "train_ids")}, indent=2))
 
 
 if __name__ == "__main__":

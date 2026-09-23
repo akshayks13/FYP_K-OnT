@@ -1,0 +1,23 @@
+{
+  "0": "belongs to electrode",
+  "1": "contains site",
+  "2": "contains species",
+  "3": "has band gap",
+  "4": "has bond",
+  "5": "has bond to",
+  "6": "has bulk modulus",
+  "7": "has coordination geometry",
+  "8": "has crystal system",
+  "9": "has element",
+  "10": "has energy above hull",
+  "11": "has formation energy",
+  "12": "has shear modulus",
+  "13": "has source site",
+  "14": "has space group",
+  "15": "has structure",
+  "16": "has target site",
+  "17": "has unit cell",
+  "18": "uses material",
+  "19": "has measurement unit",
+  "20": "has property"
+}

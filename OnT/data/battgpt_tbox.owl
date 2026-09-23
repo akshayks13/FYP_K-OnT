@@ -1,0 +1,432 @@
+@prefix battgpt: <https://w3id.org/battgpt/kg#> .
+@prefix chsub: <https://w3id.org/emmo/domain/chemical-substance#> .
+@prefix cryst: <https://w3id.org/emmo/domain/crystallography#> .
+@prefix emmo: <https://w3id.org/emmo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+<https://w3id.org/battgpt/kg> a owl:Ontology .
+
+
+# --- Locally declared classes (real battgpt: hierarchy) ---
+battgpt:BatteryRole a owl:Class ;
+    rdfs:label "Battery Component Role"@en ;
+    rdfs:comment "Functional role played by a material within an electrochemical battery system."@en ;
+    rdfs:isDefinedBy battgpt: .
+
+battgpt:CrystalBond a owl:Class ;
+    rdfs:label "Crystal Connectivity Bond Entity"@en ;
+    rdfs:comment "Explicit reified bond entity connecting source site, target site, inter-atomic distance, and coordination method."@en ;
+    rdfs:isDefinedBy battgpt: .
+
+battgpt:ElectrolyteRole a owl:Class ;
+    rdfs:label "Electrolyte Role"@en ;
+    rdfs:comment "Liquid, polymer, or solid-state ion-conducting electrolyte functional role."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:BatteryRole .
+
+battgpt:GarnetSolidElectrolyte a owl:Class ;
+    rdfs:label "Garnet Solid Electrolyte"@en ;
+    rdfs:comment "Cubic/tetragonal garnet oxide solid electrolyte (e.g., Li7La3Zr2O12 LLZO)."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:ElectrolyteRole .
+
+battgpt:LayeredCathode a owl:Class ;
+    rdfs:label "Layered Oxide Cathode"@en ;
+    rdfs:comment "Layered transition metal oxide insertion cathode material (e.g., LiCoO2, LiNiO2)."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:PositiveElectrodeRole .
+
+battgpt:NASICON a owl:Class ;
+    rdfs:label "NASICON Structured Conductor"@en ;
+    rdfs:comment "Sodium“Can we create an OnT-like language-model-based encoder for a Materials Knowledge Graph and feed its embeddings into CrystalLM?/Lithium Super Ionic Conductor framework material (e.g., Na3V2(PO4)3, LATP)."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:ElectrolyteRole .
+
+battgpt:NegativeElectrodeRole a owl:Class ;
+    rdfs:label "Negative Electrode Role"@en ;
+    rdfs:comment "Anode / negative electrode functional component role."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:BatteryRole .
+
+battgpt:OlivineCathode a owl:Class ;
+    rdfs:label "Olivine Phosphate Cathode"@en ;
+    rdfs:comment "Orthorhombic olivine phosphate cathode material (e.g., LiFePO4, NaFePO4)."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:PositiveElectrodeRole .
+
+battgpt:PositiveElectrodeRole a owl:Class ;
+    rdfs:label "Positive Electrode Role"@en ;
+    rdfs:comment "Cathode / positive electrode functional component role."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:BatteryRole .
+
+battgpt:SeparatorRole a owl:Class ;
+    rdfs:label "Separator Role"@en ;
+    rdfs:comment "Porous separator or solid electrolyte interface barrier role."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:BatteryRole .
+
+battgpt:SpinelCathode a owl:Class ;
+    rdfs:label "Spinel Oxide Cathode"@en ;
+    rdfs:comment "Cubic spinel oxide cathode material (e.g., LiMn2O4)."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:PositiveElectrodeRole .
+
+battgpt:SulfideSolidElectrolyte a owl:Class ;
+    rdfs:label "Sulfide Solid Electrolyte"@en ;
+    rdfs:comment "Superionic thiophosphate solid electrolyte (e.g., Li10GeP2S12 LGPS)."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:subClassOf battgpt:ElectrolyteRole .
+
+# --- Stub classes for EMMO types ABox individuals are typed
+# under but that battery_kg.ttl never declares locally ---
+chsub:Substance a owl:Class ;
+    rdfs:label "substance"@en .
+
+cryst:Crystal a owl:Class ;
+    rdfs:label "crystal"@en .
+
+cryst:UnitCell a owl:Class ;
+    rdfs:label "unit cell"@en .
+
+cryst:AtomicSite a owl:Class ;
+    rdfs:label "atomic site"@en .
+
+chsub:AtomicSpecies a owl:Class ;
+    rdfs:label "atomic species"@en .
+
+chsub:Element a owl:Class ;
+    rdfs:label "element"@en .
+
+cryst:SpaceGroup a owl:Class ;
+    rdfs:label "space group"@en .
+
+cryst:CrystalSystem a owl:Class ;
+    rdfs:label "crystal system"@en .
+
+emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba a owl:Class ;
+    rdfs:label "property"@en .
+
+# --- Object properties ---
+battgpt:belongsToElectrode a owl:ObjectProperty ;
+    rdfs:label "belongs to electrode"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range battgpt:BatteryRole ;
+    owl:inverseOf battgpt:usesMaterial .
+
+battgpt:containsSite a owl:ObjectProperty ;
+    rdfs:label "contains site"@en ;
+    rdfs:comment "Relates a unit cell to an atomic coordinate site located within its bounds."@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:AtomicSite .
+
+battgpt:containsSpecies a owl:ObjectProperty ;
+    rdfs:label "contains species"@en ;
+    rdfs:comment "Relates an atomic site to the chemical atomic species occupying that site."@en ;
+    rdfs:domain cryst:AtomicSite ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range chsub:AtomicSpecies .
+
+battgpt:hasBandGap a owl:ObjectProperty ;
+    rdfs:label "has band gap"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    rdfs:subPropertyOf emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 .
+
+battgpt:hasBond a owl:ObjectProperty ;
+    rdfs:label "has bond"@en ;
+    rdfs:comment "Relates an atomic site to a reified crystal bond entity."@en ;
+    rdfs:domain cryst:AtomicSite ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range battgpt:CrystalBond .
+
+battgpt:hasBondTo a owl:ObjectProperty ;
+    rdfs:label "has bond to"@en ;
+    rdfs:comment "Directed crystal-connectivity edge from one atomic site to a bonded neighbour site."@en ;
+    rdfs:domain cryst:AtomicSite ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:AtomicSite .
+
+battgpt:hasBulkModulus a owl:ObjectProperty ;
+    rdfs:label "has bulk modulus"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    rdfs:subPropertyOf emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 .
+
+battgpt:hasCoordinationGeometry a owl:ObjectProperty ;
+    rdfs:label "has coordination geometry"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    rdfs:subPropertyOf emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 .
+
+battgpt:hasCrystalSystem a owl:ObjectProperty ;
+    rdfs:label "has crystal system"@en ;
+    rdfs:comment "Relates a crystal structure to its crystal system family."@en ;
+    rdfs:domain cryst:Crystal ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:CrystalSystem .
+
+battgpt:hasElement a owl:ObjectProperty ;
+    rdfs:label "has element"@en ;
+    rdfs:comment "Relates an atomic species to its fundamental periodic table element."@en ;
+    rdfs:domain chsub:AtomicSpecies ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range chsub:Element .
+
+battgpt:hasEnergyAboveHull a owl:ObjectProperty ;
+    rdfs:label "has energy above hull"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    rdfs:subPropertyOf emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 .
+
+battgpt:hasFormationEnergy a owl:ObjectProperty ;
+    rdfs:label "has formation energy"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    rdfs:subPropertyOf emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 .
+
+battgpt:hasShearModulus a owl:ObjectProperty ;
+    rdfs:label "has shear modulus"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba ;
+    rdfs:subPropertyOf emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 .
+
+battgpt:hasSourceSite a owl:ObjectProperty ;
+    rdfs:label "has source site"@en ;
+    rdfs:comment "Relates a reified crystal bond entity to its origin atomic site."@en ;
+    rdfs:domain battgpt:CrystalBond ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:AtomicSite .
+
+battgpt:hasSpaceGroup a owl:ObjectProperty ;
+    rdfs:label "has space group"@en ;
+    rdfs:comment "Relates a crystal structure to its space group symmetry classification."@en ;
+    rdfs:domain cryst:Crystal ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:SpaceGroup .
+
+battgpt:hasStructure a owl:ObjectProperty ;
+    rdfs:label "has structure"@en ;
+    rdfs:comment "Relates a bulk battery material or compound to its crystallographic structure representation."@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:Crystal .
+
+battgpt:hasTargetSite a owl:ObjectProperty ;
+    rdfs:label "has target site"@en ;
+    rdfs:comment "Relates a reified crystal bond entity to its destination atomic site."@en ;
+    rdfs:domain battgpt:CrystalBond ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:AtomicSite .
+
+battgpt:hasUnitCell a owl:ObjectProperty ;
+    rdfs:label "has unit cell"@en ;
+    rdfs:comment "Relates a crystal structure to its repeating unit cell geometric model."@en ;
+    rdfs:domain cryst:Crystal ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range cryst:UnitCell .
+
+battgpt:usesMaterial a owl:ObjectProperty ;
+    rdfs:label "uses material"@en ;
+    rdfs:domain battgpt:BatteryRole ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range chsub:Substance .
+
+emmo:EMMO_bed1d005_b04e_4a90_94cf_02bc678a8569 a owl:ObjectProperty ;
+    rdfs:label "has measurement unit"@en ;
+    rdfs:comment "EMMO Core relation linking a property entity to its measurement unit."@en .
+
+emmo:EMMO_e1097637_70d2_4895_973f_2396f04fa204 a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    rdfs:comment "EMMO Core object property linking a physical item or material to a property entity."@en ;
+    rdfs:range emmo:EMMO_b7bcff25_ffc3_474e_9ab5_01b1664bd4ba .
+
+# --- Datatype properties ---
+battgpt:hasAlpha a owl:DatatypeProperty ;
+    rdfs:label "has lattice angle alpha"@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasAtomicMass a owl:DatatypeProperty ;
+    rdfs:label "has atomic mass"@en ;
+    rdfs:domain chsub:Element ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasBeta a owl:DatatypeProperty ;
+    rdfs:label "has lattice angle beta"@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasBondDistance a owl:DatatypeProperty ;
+    rdfs:label "has bond distance"@en ;
+    rdfs:comment "Inter-atomic bond distance in Angstroms between a site and its bonded neighbour."@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasChemsys a owl:DatatypeProperty ;
+    rdfs:label "has chemical system"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasCif a owl:DatatypeProperty ;
+    rdfs:label "has CIF"@en ;
+    rdfs:domain cryst:Crystal ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasCoordinationMethod a owl:DatatypeProperty ;
+    rdfs:label "has coordination method"@en ;
+    rdfs:comment "Computational method used to determine bond coordination (e.g. CrystalNN, VoronoiNN)."@en ;
+    rdfs:domain battgpt:CrystalBond ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasCovalentRadius a owl:DatatypeProperty ;
+    rdfs:label "has covalent radius"@en ;
+    rdfs:domain chsub:Element ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasElectronegativity a owl:DatatypeProperty ;
+    rdfs:label "has electronegativity"@en ;
+    rdfs:domain chsub:Element ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasFormula a owl:DatatypeProperty ;
+    rdfs:label "has formula"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasFractionalX a owl:DatatypeProperty ;
+    rdfs:label "has fractional coordinate x"@en ;
+    rdfs:domain cryst:AtomicSite ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasFractionalY a owl:DatatypeProperty ;
+    rdfs:label "has fractional coordinate y"@en ;
+    rdfs:domain cryst:AtomicSite ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasFractionalZ a owl:DatatypeProperty ;
+    rdfs:label "has fractional coordinate z"@en ;
+    rdfs:domain cryst:AtomicSite ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasGamma a owl:DatatypeProperty ;
+    rdfs:label "has lattice angle gamma"@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasGroup a owl:DatatypeProperty ;
+    rdfs:label "has periodic table group"@en ;
+    rdfs:domain chsub:Element ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:integer .
+
+battgpt:hasLatticea a owl:DatatypeProperty ;
+    rdfs:label "has lattice parameter a"@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasLatticeb a owl:DatatypeProperty ;
+    rdfs:label "has lattice parameter b"@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasLatticec a owl:DatatypeProperty ;
+    rdfs:label "has lattice parameter c"@en ;
+    rdfs:domain cryst:UnitCell ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:double .
+
+battgpt:hasMaterialProjectId a owl:DatatypeProperty ;
+    rdfs:label "has Materials Project ID"@en ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasOxidationState a owl:DatatypeProperty ;
+    rdfs:label "has oxidation state"@en ;
+    rdfs:domain chsub:AtomicSpecies ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:integer .
+
+battgpt:hasPeriod a owl:DatatypeProperty ;
+    rdfs:label "has periodic table period"@en ;
+    rdfs:domain chsub:Element ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:integer .
+
+battgpt:hasPointGroup a owl:DatatypeProperty ;
+    rdfs:label "has point group"@en ;
+    rdfs:domain cryst:Crystal ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasSmactValidity a owl:DatatypeProperty ;
+    rdfs:label "has SMACT validity"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:boolean .
+
+battgpt:hasSpaceGroupNumber a owl:DatatypeProperty ;
+    rdfs:label "has space group number"@en ;
+    rdfs:domain cryst:SpaceGroup ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:integer .
+
+battgpt:hasSymmetrySymbol a owl:DatatypeProperty ;
+    rdfs:label "has symmetry symbol"@en ;
+    rdfs:domain cryst:SpaceGroup ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:string .
+
+battgpt:hasValenceElectrons a owl:DatatypeProperty ;
+    rdfs:label "has valence electrons"@en ;
+    rdfs:domain chsub:Element ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:integer .
+
+battgpt:isGapDirect a owl:DatatypeProperty ;
+    rdfs:label "is gap direct"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:boolean .
+
+battgpt:isMetal a owl:DatatypeProperty ;
+    rdfs:label "is metal"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:boolean .
+
+battgpt:isStable a owl:DatatypeProperty ;
+    rdfs:label "is stable"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:boolean .
+
+battgpt:isTheoretical a owl:DatatypeProperty ;
+    rdfs:label "is theoretical"@en ;
+    rdfs:domain chsub:Substance ;
+    rdfs:isDefinedBy battgpt: ;
+    rdfs:range xsd:boolean .
+
+emmo:EMMO_faf79f53_749d_40b2_807c_d34244c192f4 a owl:DatatypeProperty ;
+    rdfs:label "has number value"@en ;
+    rdfs:comment "EMMO Core datatype property attaching a scalar numerical value to a property."@en .

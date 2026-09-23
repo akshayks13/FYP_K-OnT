@@ -1,0 +1,20 @@
+{
+    "query_sentences": {
+        "nf1": [
+            {
+                "name": "Negative Electrode Role"
+            }
+        ],
+        "nf2": [],
+        "nf3": [],
+        "nf4": []
+    },
+    "answer_ids": {
+        "nf1": [
+            0
+        ],
+        "nf2": [],
+        "nf3": [],
+        "nf4": []
+    }
+}

@@ -11,6 +11,13 @@ dist/
 # Python virtual env
 .venv/
 
+# Claude Code local session state (per-machine, not project content)
+.claude/
+
+# Throwaway smoke-test runs (scratch, superseded by the real run)
+OnT/data/battgpt_abox_test/
+OnT/data/battgpt_abox_test200/
+
 # Not part of this repo (separate baseline, own upstream repo)
 BoxSquaredEL/
 
